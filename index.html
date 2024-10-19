@@ -23,13 +23,46 @@
         <button class="answer-button" data-value="other">Другое</button>
       </div>
     </div>
-    <!-- Остальные вопросы -->
+    <div class="question-container" id="sphere-question" style="display: none;">
+      <label>Для какой сферы нужен чат-бот?</label>
+      <textarea id="sphere-textarea"></textarea>
+    </div>
+    <div class="question-container" id="functionality-question" style="display: none;">
+      <label>Какой функционал и особенности должны быть в боте?</label>
+      <textarea id="functionality-textarea"></textarea>
+    </div>
+    <div class="question-container" id="budget-question" style="display: none;">
+      <label>Какой бюджет вы планируете выделить на разработку?</label>
+      <div class="answer-buttons">
+        <button class="answer-button" data-value="15000-30000">15 000 - 30 000</button>
+        <button class="answer-button" data-value="30000-60000">30 000 - 60 000</button>
+        <button class="answer-button" data-value="60000-120000">60 000 - 120 000</button>
+        <button class="answer-button" data-value="more-120000">от 120 000</button>
+      </div>
+    </div>
+    <div class="question-container" id="phone-question" style="display: none;">
+      <label>Введите ваш номер телефона</label>
+      <input type="tel" id="phone-input" placeholder="Номер телефона">
+    </div>
+    <div class="question-container" id="review-question" style="display: none;">
+      <h2>Проверьте введенные данные:</h2>
+      <p>Платформа: <span id="platform-value"></span></p>
+      <p>Сфера: <span id="sphere-value"></span></p>
+      <p>Функционал: <span id="functionality-value"></span></p>
+      <p>Бюджет: <span id="budget-value"></span></p>
+      <p>Номер телефона: <span id="phone-value"></span></p>
+      <div class="button-container">
+        <button id="edit-button">Редактировать</button>
+        <button id="submit-button">Отправить</button>
+      </div>
+    </div>
     <div class="button-container">
       <button id="prev-button" disabled>Назад</button>
       <button id="next-button">Далее</button>
     </div>
   </div>
 
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="app.js"></script>
-</body>
+</head>
 </html>
