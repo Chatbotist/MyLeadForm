@@ -2,7 +2,7 @@
   "name": "telegram-bot-form",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "vercel dev",
     "build": "vercel build",
