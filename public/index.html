@@ -1,88 +1,227 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lead Form</title>
-  <link rel="stylesheet" href="public/style.css">
+  <title>Заявка на чат-бота</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #ffffff;
+    }
+    .question {
+      width: 80%;
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      margin-top: 0;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .options input[type="radio"] {
+      margin-right: 5px;
+    }
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+    }
+    .buttons button {
+      background-color: white;
+      color: black;
+      border: 1px solid black;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <div id="platform-question" class="question-container">
-      <h2>Выберите платформу</h2>
-      <div class="answer-buttons">
-        <button class="answer-button" data-value="web">Веб-приложение</button>
-        <button class="answer-button" data-value="mobile">Мобильное приложение</button>
-        <button class="answer-button" data-value="other">Другое</button>
+  <div class="container">
+    <h2>Заявка на чат-бота</h2>
+    <div class="question">
+      <h3>Для какой платформы нужен чат-бот?</h3>
+      <div class="options">
+        <label><input type="radio" name="platform" value="Telegram"> Telegram</label>
+        <label><input type="radio" name="platform" value="Вконтакте"> Вконтакте</label>
+        <label><input type="radio" name="platform" value="Instagram"> Instagram</label>
+        <label><input type="radio" name="platform" value="WhatsApp"> WhatsApp</label>
+        <label><input type="radio" name="platform" value="Viber"> Viber</label>
+        <label><input type="radio" name="platform" value="Avito"> Avito</label>
+        <label><input type="radio" name="platform" value="Discord"> Discord</label>
+        <label><input type="radio" name="platform" value="Сайт"> Сайт</label>
+        <label><input type="radio" name="platform" value="Другое"> Другое</label>
       </div>
     </div>
-
-    <div id="other-platform-question" class="question-container" style="display: none;">
-      <h2>Укажите другую платформу</h2>
-      <input type="text" id="other-platform-input" class="answer-input">
+    <div class="question">
+      <h3>Для какой сферы нужен чат-бот?</h3>
+      <input type="text" class="input-field" id="bot-purpose">
     </div>
-
-    <div id="sphere-question" class="question-container" style="display: none;">
-      <h2>Укажите сферу деятельности</h2>
-      <textarea id="sphere-textarea" class="answer-textarea"></textarea>
+    <div class="question">
+      <h3>Какой функционал и особенности должны быть в боте?</h3>
+      <textarea class="input-field" id="bot-features"></textarea>
     </div>
-
-    <div id="functionality-question" class="question-container" style="display: none;">
-      <h2>Опишите необходимую функциональность</h2>
-      <textarea id="functionality-textarea" class="answer-textarea"></textarea>
-    </div>
-
-    <div id="budget-question" class="question-container" style="display: none;">
-      <h2>Укажите бюджет</h2>
-      <div class="answer-buttons">
-        <button class="answer-button" data-value="up-to-50k">До 50 000 ₽</button>
-        <button class="answer-button" data-value="50k-100k">50 000 - 100 000 ₽</button>
-        <button class="answer-button" data-value="100k-300k">100 000 - 300 000 ₽</button>
-        <button class="answer-button" data-value="more-than-300k">Более 300 000 ₽</button>
+    <div class="question">
+      <h3>Какой бюджет вы планируете выделить на разработку?</h3>
+      <div class="options">
+        <label><input type="radio" name="budget" value="15000-30000"> 15 000 - 30 000</label>
+        <label><input type="radio" name="budget" value="30000-60000"> 30 000 - 60 000</label>
+        <label><input type="radio" name="budget" value="60000-120000"> 60 000 - 120 000</label>
+        <label><input type="radio" name="budget" value="over120000"> от 120 000</label>
       </div>
     </div>
-
-    <div id="phone-question" class="question-container" style="display: none;">
-      <h2>Укажите контактный телефон</h2>
-      <input type="tel" id="phone-input" class="answer-input">
+    <div class="question">
+      <h3>Введите номер телефона</h3>
+      <input type="tel" class="input-field" id="phone-number" required>
     </div>
-
-    <div id="review-question" class="question-container" style="display: none;">
-      <h2>Проверьте данные</h2>
-      <div class="review-item">
-        <div class="review-label">Платформа:</div>
-        <div id="platform-value" class="review-value"></div>
-      </div>
-      <div class="review-item">
-        <div class="review-label">Другая платформа:</div>
-        <div id="other-platform-value" class="review-value"></div>
-      </div>
-      <div class="review-item">
-        <div class="review-label">Сфера деятельности:</div>
-        <div id="sphere-value" class="review-value"></div>
-      </div>
-      <div class="review-item">
-        <div class="review-label">Функциональность:</div>
-        <div id="functionality-value" class="review-value"></div>
-      </div>
-      <div class="review-item">
-        <div class="review-label">Бюджет:</div>
-        <div id="budget-value" class="review-value"></div>
-      </div>
-      <div class="review-item">
-        <div class="review-label">Контактный телефон:</div>
-        <div id="phone-value" class="review-value"></div>
-      </div>
-      <div class="buttons">
-        <button id="edit-button">Редактировать</button>
-        <button id="submit-button">Отправить</button>
-      </div>
-    </div>
-
     <div class="buttons">
-      <button id="prev-button" disabled>Предыдущий</button>
-      <button id="next-button">Следующий</button>
+      <button id="back-btn">Назад</button>
+      <button id="next-btn">Далее</button>
     </div>
   </div>
 
-  <script src="public/app.js"></script>
+  <script>
+    // Инициализация Telegram Web App
+    Telegram.WebApp.init();
+
+    // Установка цвета фона в зависимости от темы пользователя
+    document.body.style.backgroundColor = Telegram.WebApp.colorScheme === 'dark' ? '#000000' : '#ffffff';
+
+    // Получение данных пользователя
+    const { user_id, username, first_name } = Telegram.WebApp.initDataUnsafe;
+
+    // Обработка событий клика на кнопки
+    const backBtn = document.getElementById('back-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    let currentQuestion = 0;
+    const questions = document.querySelectorAll('.question');
+
+    backBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        questions[currentQuestion].style.display = 'none';
+        currentQuestion--;
+        questions[currentQuestion].style.display = 'block';
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      // Проверка заполнения текущего вопроса
+      const currentQuestionEl = questions[currentQuestion];
+      const inputs = currentQuestionEl.querySelectorAll('input, textarea');
+      let valid = true;
+      inputs.forEach((input) => {
+        if (input.value.trim() === '') {
+          valid = false;
+        }
+      });
+
+      if (valid) {
+        currentQuestionEl.style.display = 'none';
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          questions[currentQuestion].style.display = 'block';
+        } else {
+          // Отображение итогового экрана
+          displaySummary();
+        }
+      } else {
+        alert('Пожалуйста, заполните все обязательные поля.');
+      }
+    });
+
+    function displaySummary() {
+      // Получение данных из формы
+      const platformRadio = document.querySelector('input[name="platform"]:checked');
+      const botPurpose = document.getElementById('bot-purpose').value;
+      const botFeatures = document.getElementById('bot-features').value;
+      const budgetRadio = document.querySelector('input[name="budget"]:checked');
+      const phoneNumber = document.getElementById('phone-number').value;
+
+      // Вывод данных на экран
+      const summaryContainer = document.createElement('div');
+      summaryContainer.innerHTML = `
+        <h2>Заявка на чат-бота</h2>
+        <p>Платформа: ${platformRadio ? platformRadio.value : 'Не выбрано'}</p>
+        <p>Сфера: ${botPurpose}</p>
+        <p>Функционал и особенности: ${botFeatures}</p>
+        <p>Бюджет: ${budgetRadio ? budgetRadio.value : 'Не выбрано'}</p>
+        <p>Номер телефона: ${phoneNumber}</p>
+        <div class="buttons">
+          <button id="edit-btn">Редактировать</button>
+          <button id="submit-btn">Отправить</button>
+        </div>
+      `;
+      document.body.innerHTML = '';
+      document.body.appendChild(summaryContainer);
+
+      // Обработка событий клика на кнопки
+      const editBtn = document.getElementById('edit-btn');
+      const submitBtn = document.getElementById('submit-btn');
+
+      editBtn.addEventListener('click', () => {
+        // Очистка введенных данных и переход к первому вопросу
+        questions.forEach((question) => {
+          question.style.display = 'none';
+        });
+        questions[0].style.display = 'block';
+        currentQuestion = 0;
+      });
+
+      submitBtn.addEventListener('click', async () => {
+        try {
+          // Отправка данных по API Telegram
+          const response = await fetch('/api/addUserData', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ telegramId: user_id, username, name: first_name, platform: platformRadio.value, botPurpose, botFeatures, budget: budgetRadio.value, phoneNumber })
+          });
+
+          if (response.ok) {
+            alert('Данные успешно отправлены!');
+            Telegram.WebApp.close();
+          } else {
+            const error = await response.json();
+            alert(`Ошибка: ${error.error}`);
+          }
+        } catch (error) {
+          alert('Произошла ошибка. Пожалуйста, попробуйте еще раз.');
+          console.error('Ошибка при отправке данных:', error);
+        }
+      });
+    }
+
+    // Открытие приложения на весь экран
+    Telegram.WebApp.expand();
+
+    // Включение вертикальной прокрутки
+    Telegram.WebApp.enableVerticalSwipes();
+
+    // Включение подтверждения закрытия
+    Telegram.WebApp.enableClosingConfirmation();
+  </script>
 </body>
 </html>
