@@ -37,9 +37,9 @@ h1 {
 }
 
 .answer-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
 }
 
 .answer-button {
@@ -48,7 +48,6 @@ h1 {
   border: 1px solid black;
   padding: 10px 20px;
   border-radius: 15px;
-  margin-bottom: 10px;
   cursor: pointer;
 }
 
@@ -85,6 +84,7 @@ h1 {
   color: black;
   cursor: pointer;
 }
+
 .button-container button:disabled {
   background-color: #999;
   cursor: not-allowed;
