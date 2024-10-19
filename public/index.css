@@ -1,0 +1,51 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #ffffff;
+}
+.question {
+  width: 80%;
+  margin-bottom: 20px;
+}
+.question h3 {
+  margin-top: 0;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.options label {
+  display: block;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.options input[type="radio"] {
+  margin-right: 5px;
+}
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+.buttons button {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  padding: 10px 20px;
+  cursor: pointer;
+}
