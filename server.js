@@ -1,65 +1,79 @@
 const express = require('express');
 const path = require('path');
-const { getUserDataByTelegramId, addUserData, updateUserData, sendMessageToChannel, BOT_TOKEN, CHANNEL_ID } = require('./utils');
+const fetch = require('node-fetch');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+const BOT_TOKEN = 'YOUR_BOT_TOKEN';
+const CHANNEL_ID = '@your_channel_username';
+
+let users = []; // Временное хранение данных пользователей
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-app.get('/api/getUserDataByTelegramId', async (req, res) => {
+app.get('/api/getUserDataByTelegramId', (req, res) => {
   const { telegram_id } = req.query;
-  try {
-    const userData = await getUserDataByTelegramId(telegram_id);
+  const userData = users.find(user => user.telegram_id === parseInt(telegram_id));
+  if (userData) {
     res.json({ data: userData });
-  } catch (error) {
-    console.error('Ошибка при получении данных пользователя:', error);
-    if (error.message === 'Пользователь не найден') {
-      return res.status(404).json({ error: error.message });
+  } else {
+    res.status(404).json({ error: 'Пользователь не найден' });
+  }
+});
+
+app.post('/api/addUserData', (req, res) => {
+  const { telegramId, username, name, platform, botPurpose, botFeatures, budget, phoneNumber } = req.body;
+
+  // Проверяем, есть ли пользователь с таким Telegram ID
+  const existingUser = users.find(user => user.telegram_id === telegramId);
+  if (existingUser) {
+    return res.status(400).json({ error: 'Пользователь с таким telegram_id уже существует' });
+  }
+
+  // Создание сообщения для отправки в Telegram-канал
+  const message = `
+Новая заявка на чат-бота:
+Платформа: ${platform}
+Сфера: ${botPurpose}
+Функционал и особенности: ${botFeatures}
+Бюджет: ${budget}
+Номер телефона: ${phoneNumber}
+Пользователь: @${username} (ID: ${telegramId})
+`;
+
+  // Отправка сообщения в Telegram-канал
+  sendMessageToChannel(message);
+
+  // Сохранение данных пользователя
+  const newUser = { telegram_id: telegramId, username, name, platform, botPurpose, botFeatures, budget, phoneNumber };
+  users.push(newUser);
+
+  res.status(201).json(newUser);
+});
+
+async function sendMessageToChannel(message) {
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        chat_id: CHANNEL_ID,
+        text: message
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при отправке сообщения в канал');
     }
-    res.status(500).json({ error: 'Ошибка при получении данных пользователя' });
-  }
-});
-
-app.post('/api/addUserData', async (req, res) => {
-  const { telegramId, username, name } = req.body;
-  try {
-    const userData = await addUserData(telegramId, username, name);
-    res.status(201).json(userData);
-  } catch (error) {
-    console.error('Ошибка при добавлении данных пользователя:', error);
-    if (error.message === 'Пользователь с таким telegram_id уже существует') {
-      return res.status(400).json({ error: error.message });
-    }
-    res.status(500).json({ error: 'Ошибка при добавлении данных пользователя' });
-  }
-});
-
-app.post('/api/updateUserData', async (req, res) => {
-  const { item_id, data } = req.body;
-  try {
-    const updatedData = await updateUserData(item_id, data);
-    res.json(updatedData);
-  } catch (error) {
-    console.error('Ошибка при обновлении данных пользователя:', error);
-    res.status(500).json({ error: 'Ошибка при обновлении данных пользователя' });
-  }
-});
-
-app.post('/api/sendMessageToChannel', async (req, res) => {
-  const { message, telegramId } = req.body;
-  try {
-    const response = await sendMessageToChannel(message, telegramId);
-    res.json(response);
   } catch (error) {
     console.error('Ошибка при отправке сообщения в канал:', error);
-    if (error.message === 'Пользователь не подписан на канал') {
-      return res.status(403).json({ error: error.message });
-    }
-    res.status(500).json({ error: 'Ошибка при отправке сообщения в канал' });
+    throw error;
   }
-});
+}
 
 app.listen(port, () => {
   console.log(`Сервер запущен на порту ${port}`);
