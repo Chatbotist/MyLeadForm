@@ -52,3 +52,72 @@ nextButton.addEventListener('click', () => {
   } else if (currentQuestion.type === 'input' || currentQuestion.type === 'textarea') {
     const inputValue = document.getElementById(`${currentQuestion.id}-${currentQuestion.type}`).value;
     if (!inputValue.trim()) {
+      alert(`Заполните поле "${currentQuestion.id}"`);
+      return;
+    }
+    updateReviewValues(currentQuestion.id, inputValue);
+  }
+  currentQuestionIndex++;
+  showQuestion(currentQuestionIndex);
+});
+
+editButton.addEventListener('click', () => {
+  document.getElementById('review-question').style.display = 'none';
+  showQuestion(currentQuestionIndex);
+});
+
+submitButton.addEventListener('click', () => {
+  // Отправка данных
+  const formData = {
+    telegram_id: telegramId,
+    username: telegramUsername,
+    name: telegramName,
+    platform: urlParams.get('platform'),
+    otherPlatform: urlParams.get('other-platform'),
+    sphere: urlParams.get('sphere'),
+    functionality: urlParams.get('functionality'),
+    budget: urlParams.get('budget'),
+    phone: urlParams.get('phone')
+  };
+
+  // Здесь должен быть код для отправки данных
+  console.log('Отправлено:', formData);
+});
+
+// Обработка выбора платформы
+document.querySelectorAll('.answer-button').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    const selectedButton = document.querySelector('.answer-button.selected');
+    if (selectedButton) {
+      selectedButton.classList.remove('selected');
+    }
+    event.target.classList.add('selected');
+    const selectedValue = event.target.dataset.value;
+    updateReviewValues('platform', selectedValue);
+    if (selectedValue === 'other') {
+      showQuestion(1);
+    } else {
+      showQuestion(2);
+    }
+  });
+});
+
+// Обработка выбора бюджета
+document.querySelectorAll('#budget-question .answer-button').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    const selectedButton = document.querySelector('#budget-question .answer-button.selected');
+    if (selectedButton) {
+      selectedButton.classList.remove('selected');
+    }
+    event.target.classList.add('selected');
+    const selectedValue = event.target.dataset.value;
+    updateReviewValues('budget', selectedValue);
+    showQuestion(5);
+  });
+});
+
+// Функция для обновления данных в review-контейнере
+function updateReviewValues(field, value) {
+  urlParams.set(field, value);
+  document.getElementById(`${field}-value`).textContent = value;
+}
