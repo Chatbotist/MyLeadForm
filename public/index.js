@@ -1,11 +1,9 @@
 // Инициализация Telegram Web App
 Telegram.WebApp.onEvent('mainButtonClicked', function() {
-  // Сохранение и отправка данных
   saveAndSendUserData();
 });
-
 // Установка цвета фона в зависимости от темы пользователя
-document.body.style.backgroundColor = Telegram.WebApp.colorScheme === 'dark' ? '#000000' : '#ffffff';
+Telegram.WebApp.setBackgroundColor(Telegram.WebApp.colorScheme === 'dark' ? '#000000' : '#ffffff');
 
 // Получение данных пользователя
 const { user_id, username, first_name } = Telegram.WebApp.initDataUnsafe;
@@ -27,7 +25,10 @@ async function saveAndSendUserData() {
 
   // Проверка заполнения всех полей
   if (!platform || !botPurpose || !botFeatures || !budget || !phoneNumber) {
-    alert('Пожалуйста, заполните все обязательные поля.');
+    Telegram.WebApp.showPopup({
+      title: 'Ошибка',
+      message: 'Пожалуйста, заполните все обязательные поля.'
+    });
     return;
   }
 
@@ -42,14 +43,29 @@ async function saveAndSendUserData() {
     });
 
     if (response.ok) {
-      alert('Данные успешно отправлены!');
+      Telegram.WebApp.showPopup({
+        title: 'Успех',
+        message: 'Данные успешно отправлены!'
+      });
       Telegram.WebApp.close();
     } else {
       const error = await response.json();
-      alert(`Ошибка: ${error.error}`);
+      Telegram.WebApp.showPopup({
+        title: 'Ошибка',
+        message: `Ошибка: ${error.error}`
+      });
     }
   } catch (error) {
-    alert('Произошла ошибка. Пожалуйста, попробуйте еще раз.');
+    Telegram.WebApp.showPopup({
+      title: 'Ошибка',
+      message: 'Произошла ошибка. Пожалуйста, попробуйте еще раз.'
+    });
     console.error('Ошибка при отправке данных:', error);
   }
 }
+
+// Открытие приложения на весь экран
+Telegram.WebApp.expand();
+
+// Включение подтверждения закрытия
+Telegram.WebApp.enableClosingConfirmation();
