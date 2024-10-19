@@ -1,14 +1,18 @@
 {
-  "name": "telegram-bot-form",
+  "name": "your-project-name",
   "version": "1.0.0",
-  "description": "",
+  "description": "Описание вашего проекта",
   "main": "server.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "vercel build",
-    "deploy": "vercel deploy"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "Ваше имя",
   "license": "ISC"
 }
