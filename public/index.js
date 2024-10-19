@@ -1,9 +1,21 @@
 // Инициализация Telegram Web App
+Telegram.WebApp.onEvent('beforeClose', function() {
+  if (!validateForm()) {
+    Telegram.WebApp.showPopup({
+      title: 'Ошибка',
+      message: 'Пожалуйста, заполните все обязательные поля.'
+    });
+    return false;
+  }
+  return true;
+});
+
 Telegram.WebApp.onEvent('mainButtonClicked', function() {
   saveAndSendUserData();
 });
+
 // Установка цвета фона в зависимости от темы пользователя
-Telegram.WebApp.setBackgroundColor(Telegram.WebApp.colorScheme === 'dark' ? '#000000' : '#ffffff');
+document.body.style.backgroundColor = Telegram.WebApp.colorScheme === 'dark' ? '#000000' : '#ffffff';
 
 // Получение данных пользователя
 const { user_id, username, first_name } = Telegram.WebApp.initDataUnsafe;
@@ -24,11 +36,7 @@ async function saveAndSendUserData() {
   const phoneNumber = document.getElementById('phone-number').value;
 
   // Проверка заполнения всех полей
-  if (!platform || !botPurpose || !botFeatures || !budget || !phoneNumber) {
-    Telegram.WebApp.showPopup({
-      title: 'Ошибка',
-      message: 'Пожалуйста, заполните все обязательные поля.'
-    });
+  if (!validateForm()) {
     return;
   }
 
@@ -62,6 +70,22 @@ async function saveAndSendUserData() {
     });
     console.error('Ошибка при отправке данных:', error);
   }
+}
+
+function validateForm() {
+  // Получение данных из формы
+  const platform = document.querySelector('input[name="platform"]:checked');
+  const botPurpose = document.getElementById('bot-purpose');
+  const botFeatures = document.getElementById('bot-features');
+  const budget = document.querySelector('input[name="budget"]:checked');
+  const phoneNumber = document.getElementById('phone-number');
+
+  // Проверка заполнения всех полей
+  if (!platform || !botPurpose.value || !botFeatures.value || !budget || !phoneNumber.value) {
+    return false;
+  }
+
+  return true;
 }
 
 // Открытие приложения на весь экран
