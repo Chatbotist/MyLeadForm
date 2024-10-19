@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Получение данных пользователя
+  // Получение данных пользователя из параметров URL
   const urlParams = new URLSearchParams(window.location.search);
-  const telegramId = urlParams.get('telegram_id');
-  const telegramUsername = urlParams.get('username');
-  const telegramName = urlParams.get('name');
+  const tgWebAppData = JSON.parse(urlParams.get('tgWebAppData') || '{}');
+  const { user, query_id } = tgWebAppData;
+  const { id: telegramId, first_name: telegramName, username: telegramUsername } = user || {};
 
   // Логика переключения вопросов
   let currentQuestionIndex = 0;
@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
       sphere: urlParams.get('sphere'),
       functionality: urlParams.get('functionality'),
       budget: urlParams.get('budget'),
-      phone: urlParams.get('phone')
+      phone: urlParams.get('phone'),
+      query_id
     };
 
     // Здесь должен быть код для отправки данных
