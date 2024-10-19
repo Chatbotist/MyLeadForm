@@ -1,68 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Заявка на чат-бота</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Lead Form</title>
+  <link rel="stylesheet" href="public/style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Заявка на чат-бота</h1>
-    <div class="question-container" id="platform-question" style="display: block;">
-      <label>Для какой платформы нужен чат-бот?</label>
+  <div id="app">
+    <div id="platform-question" class="question-container">
+      <h2>Выберите платформу</h2>
       <div class="answer-buttons">
-        <button class="answer-button" data-value="telegram">Telegram</button>
-        <button class="answer-button" data-value="vkontakte">Вконтакте</button>
-        <button class="answer-button" data-value="instagram">Instagram</button>
-        <button class="answer-button" data-value="whatsapp">WhatsApp</button>
-        <button class="answer-button" data-value="viber">Viber</button>
-        <button class="answer-button" data-value="avito">Avito</button>
-        <button class="answer-button" data-value="discord">Discord</button>
-        <button class="answer-button" data-value="website">Сайт</button>
+        <button class="answer-button" data-value="web">Веб-приложение</button>
+        <button class="answer-button" data-value="mobile">Мобильное приложение</button>
         <button class="answer-button" data-value="other">Другое</button>
       </div>
     </div>
-    <div class="question-container" id="sphere-question" style="display: none;">
-      <label>Для какой сферы нужен чат-бот?</label>
-      <textarea id="sphere-textarea"></textarea>
+
+    <div id="other-platform-question" class="question-container" style="display: none;">
+      <h2>Укажите другую платформу</h2>
+      <input type="text" id="other-platform-input" class="answer-input">
     </div>
-    <div class="question-container" id="functionality-question" style="display: none;">
-      <label>Какой функционал и особенности должны быть в боте?</label>
-      <textarea id="functionality-textarea"></textarea>
+
+    <div id="sphere-question" class="question-container" style="display: none;">
+      <h2>Укажите сферу деятельности</h2>
+      <textarea id="sphere-textarea" class="answer-textarea"></textarea>
     </div>
-    <div class="question-container" id="budget-question" style="display: none;">
-      <label>Какой бюджет вы планируете выделить на разработку?</label>
+
+    <div id="functionality-question" class="question-container" style="display: none;">
+      <h2>Опишите необходимую функциональность</h2>
+      <textarea id="functionality-textarea" class="answer-textarea"></textarea>
+    </div>
+
+    <div id="budget-question" class="question-container" style="display: none;">
+      <h2>Укажите бюджет</h2>
       <div class="answer-buttons">
-        <button class="answer-button" data-value="15000-30000">15 000 - 30 000</button>
-        <button class="answer-button" data-value="30000-60000">30 000 - 60 000</button>
-        <button class="answer-button" data-value="60000-120000">60 000 - 120 000</button>
-        <button class="answer-button" data-value="more-120000">от 120 000</button>
+        <button class="answer-button" data-value="up-to-50k">До 50 000 ₽</button>
+        <button class="answer-button" data-value="50k-100k">50 000 - 100 000 ₽</button>
+        <button class="answer-button" data-value="100k-300k">100 000 - 300 000 ₽</button>
+        <button class="answer-button" data-value="more-than-300k">Более 300 000 ₽</button>
       </div>
     </div>
-    <div class="question-container" id="phone-question" style="display: none;">
-      <label>Введите ваш номер телефона</label>
-      <input type="tel" id="phone-input" placeholder="Номер телефона">
+
+    <div id="phone-question" class="question-container" style="display: none;">
+      <h2>Укажите контактный телефон</h2>
+      <input type="tel" id="phone-input" class="answer-input">
     </div>
-    <div class="question-container" id="review-question" style="display: none;">
-      <h2>Проверьте введенные данные:</h2>
-      <p>Платформа: <span id="platform-value"></span></p>
-      <p>Сфера: <span id="sphere-value"></span></p>
-      <p>Функционал: <span id="functionality-value"></span></p>
-      <p>Бюджет: <span id="budget-value"></span></p>
-      <p>Номер телефона: <span id="phone-value"></span></p>
-      <div class="button-container">
+
+    <div id="review-question" class="question-container" style="display: none;">
+      <h2>Проверьте данные</h2>
+      <div class="review-item">
+        <div class="review-label">Платформа:</div>
+        <div id="platform-value" class="review-value"></div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Другая платформа:</div>
+        <div id="other-platform-value" class="review-value"></div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Сфера деятельности:</div>
+        <div id="sphere-value" class="review-value"></div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Функциональность:</div>
+        <div id="functionality-value" class="review-value"></div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Бюджет:</div>
+        <div id="budget-value" class="review-value"></div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Контактный телефон:</div>
+        <div id="phone-value" class="review-value"></div>
+      </div>
+      <div class="buttons">
         <button id="edit-button">Редактировать</button>
         <button id="submit-button">Отправить</button>
       </div>
     </div>
-    <div class="button-container">
-      <button id="prev-button" disabled>Назад</button>
-      <button id="next-button">Далее</button>
+
+    <div class="buttons">
+      <button id="prev-button" disabled>Предыдущий</button>
+      <button id="next-button">Следующий</button>
     </div>
   </div>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="app.js"></script>
-</head>
+  <script src="public/app.js"></script>
+</body>
 </html>
