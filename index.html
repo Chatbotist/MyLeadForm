@@ -28,21 +28,41 @@
       text-align: left;
       width: 80%;
       max-width: 600px;
+      background-color: #fff;
+      color: #000;
+      padding: 20px;
+      border-radius: 15px;
     }
     .question-container label {
       display: block;
       margin-bottom: 10px;
+      font-weight: bold;
     }
-    .question-container input,
+    .answer-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .answer-button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .answer-button.selected {
+      background-color: #4CAF50;
+    }
     .question-container textarea,
-    .question-container select {
+    .question-container input {
       width: 100%;
       padding: 10px;
       font-size: 16px;
       border-radius: 5px;
       border: none;
-      background-color: #333;
-      color: white;
+      background-color: #f2f2f2;
     }
     .button-container {
       display: flex;
@@ -64,50 +84,46 @@
 <body>
   <div class="container">
     <h1>Заявка на чат-бота</h1>
-    <div class="question-container">
+    <div class="question-container" id="platform-question" style="display: block;">
       <label>Для какой платформы нужен чат-бот?</label>
-      <select id="platform-select">
-        <option value="telegram">Telegram</option>
-        <option value="vkontakte">Вконтакте</option>
-        <option value="instagram">Instagram</option>
-        <option value="whatsapp">WhatsApp</option>
-        <option value="viber">Viber</option>
-        <option value="avito">Avito</option>
-        <option value="discord">Discord</option>
-        <option value="website">Сайт</option>
-        <option value="other">Другое</option>
-      </select>
+      <div class="answer-buttons">
+        <button class="answer-button" data-value="telegram">Telegram</button>
+        <button class="answer-button" data-value="vkontakte">Вконтакте</button>
+        <button class="answer-button" data-value="instagram">Instagram</button>
+        <button class="answer-button" data-value="whatsapp">WhatsApp</button>
+        <button class="answer-button" data-value="viber">Viber</button>
+        <button class="answer-button" data-value="avito">Avito</button>
+        <button class="answer-button" data-value="discord">Discord</button>
+        <button class="answer-button" data-value="website">Сайт</button>
+        <button class="answer-button" data-value="other">Другое</button>
+      </div>
     </div>
-    <div class="question-container" id="other-platform-container" style="display: none;">
+    <div class="question-container" id="other-platform-question" style="display: none;">
       <label>Укажите для какой платформы нужен чат-бот</label>
       <input type="text" id="other-platform-input">
     </div>
-    <div class="question-container">
+    <div class="question-container" id="sphere-question" style="display: none;">
       <label>Для какой сферы нужен чат-бот?</label>
       <textarea id="sphere-textarea"></textarea>
     </div>
-    <div class="question-container">
+    <div class="question-container" id="functionality-question" style="display: none;">
       <label>Какой функционал и особенности должны быть в боте?</label>
       <textarea id="functionality-textarea"></textarea>
     </div>
-    <div class="question-container">
+    <div class="question-container" id="budget-question" style="display: none;">
       <label>Какой бюджет вы планируете выделить на разработку?</label>
-      <select id="budget-select">
-        <option value="15000-30000">15 000 - 30 000</option>
-        <option value="30000-60000">30 000 - 60 000</option>
-        <option value="60000-120000">60 000 - 120 000</option>
-        <option value="over120000">от 120 000</option>
-      </select>
+      <div class="answer-buttons">
+        <button class="answer-button" data-value="15000-30000">15 000 - 30 000</button>
+        <button class="answer-button" data-value="30000-60000">30 000 - 60 000</button>
+        <button class="answer-button" data-value="60000-120000">60 000 - 120 000</button>
+        <button class="answer-button" data-value="over120000">от 120 000</button>
+      </div>
     </div>
-    <div class="question-container">
+    <div class="question-container" id="phone-question" style="display: none;">
       <label>Номер телефона</label>
       <input type="tel" id="phone-input">
     </div>
-    <div class="button-container">
-      <button id="prev-button" style="display: none;">Назад</button>
-      <button id="next-button">Далее</button>
-    </div>
-    <div class="question-container" id="review-container" style="display: none;">
+    <div class="question-container" id="review-question" style="display: none;">
       <h2>Проверьте введенные данные:</h2>
       <p>Платформа: <span id="platform-value"></span></p>
       <p>Сфера: <span id="sphere-value"></span></p>
@@ -118,6 +134,10 @@
         <button id="edit-button">Редактировать</button>
         <button id="submit-button">Отправить</button>
       </div>
+    </div>
+    <div class="button-container">
+      <button id="prev-button" style="display: none;">Назад</button>
+      <button id="next-button">Далее</button>
     </div>
   </div>
 
@@ -131,25 +151,23 @@
     // Логика переключения вопросов
     let currentQuestionIndex = 0;
     const questions = [
-      { type: 'select', id: 'platform-select' },
-      { type: 'input', id: 'other-platform-input' },
-      { type: 'textarea', id: 'sphere-textarea' },
-      { type: 'textarea', id: 'functionality-textarea' },
-      { type: 'select', id: 'budget-select' },
-      { type: 'input', id: 'phone-input' },
-      { type: 'review' }
+      { id: 'platform', type: 'buttons' },
+      { id: 'other-platform', type: 'input' },
+      { id: 'sphere', type: 'textarea' },
+      { id: 'functionality', type: 'textarea' },
+      { id: 'budget', type: 'buttons' },
+      { id: 'phone', type: 'input' },
+      { id: 'review', type: 'review' }
     ];
 
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
     const editButton = document.getElementById('edit-button');
     const submitButton = document.getElementById('submit-button');
-    const otherPlatformContainer = document.getElementById('other-platform-container');
-    const reviewContainer = document.getElementById('review-container');
 
     function showQuestion(index) {
       questions.forEach((question, i) => {
-        const questionContainer = document.querySelector(`#${question.id}-container`);
+        const questionContainer = document.getElementById(`${question.id}-question`);
         if (i === index) {
           questionContainer.style.display = 'block';
           if (i === 0) {
@@ -169,17 +187,26 @@
     }
 
     nextButton.addEventListener('click', () => {
+      const currentQuestion = questions[currentQuestionIndex];
+      if (currentQuestion.type === 'buttons') {
+        const selectedButton = document.querySelector(`.answer-button.selected`);
+        if (!selectedButton) return;
+        const selectedValue = selectedButton.dataset.value;
+        updateReviewValues(currentQuestion.id, selectedValue);
+      } else if (currentQuestion.type === 'input' || currentQuestion.type === 'textarea') {
+        const inputValue = document.getElementById(`${currentQuestion.id}-${currentQuestion.type}`).value;
+        updateReviewValues(currentQuestion.id, inputValue);
+      }
       currentQuestionIndex++;
       showQuestion(currentQuestionIndex);
     });
-
     prevButton.addEventListener('click', () => {
       currentQuestionIndex--;
       showQuestion(currentQuestionIndex);
     });
 
     editButton.addEventListener('click', () => {
-      reviewContainer.style.display = 'none';
+      document.getElementById('review-question').style.display = 'none';
       showQuestion(currentQuestionIndex);
     });
 
@@ -189,33 +216,55 @@
         telegram_id: telegramId,
         username: telegramUsername,
         name: telegramName,
-        platform: document.getElementById('platform-select').value,
-        otherPlatform: document.getElementById('other-platform-input').value,
-        sphere: document.getElementById('sphere-textarea').value,
-        functionality: document.getElementById('functionality-textarea').value,
-        budget: document.getElementById('budget-select').value,
-        phone: document.getElementById('phone-input').value
+        platform: urlParams.get('platform'),
+        otherPlatform: urlParams.get('other-platform'),
+        sphere: urlParams.get('sphere'),
+        functionality: urlParams.get('functionality'),
+        budget: urlParams.get('budget'),
+        phone: urlParams.get('phone')
       };
 
       // Здесь должен быть код для отправки данных по API Telegram
       console.log('Отправлено:', formData);
     });
 
-    // Обработка отображения "Другое" поля для платформы
-    document.getElementById('platform-select').addEventListener('change', (event) => {
-      if (event.target.value === 'other') {
-        otherPlatformContainer.style.display = 'block';
-      } else {
-        otherPlatformContainer.style.display = 'none';
-      }
+    // Обработка выбора платформы
+    document.querySelectorAll('.answer-button').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const selectedButton = document.querySelector('.answer-button.selected');
+        if (selectedButton) {
+          selectedButton.classList.remove('selected');
+        }
+        event.target.classList.add('selected');
+        const selectedValue = event.target.dataset.value;
+        updateReviewValues('platform', selectedValue);
+        if (selectedValue === 'other') {
+          showQuestion(1);
+        } else {
+          showQuestion(2);
+        }
+      });
     });
 
-    // Заполнение данных пользователя в review-контейнере
-    document.getElementById('platform-value').textContent = urlParams.get('platform');
-    document.getElementById('sphere-value').textContent = urlParams.get('sphere');
-    document.getElementById('functionality-value').textContent = urlParams.get('functionality');
-    document.getElementById('budget-value').textContent = urlParams.get('budget');
-    document.getElementById('phone-value').textContent = urlParams.get('phone');
+    // Обработка выбора бюджета
+    document.querySelectorAll('#budget-question .answer-button').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const selectedButton = document.querySelector('#budget-question .answer-button.selected');
+        if (selectedButton) {
+          selectedButton.classList.remove('selected');
+        }
+        event.target.classList.add('selected');
+        const selectedValue = event.target.dataset.value;
+        updateReviewValues('budget', selectedValue);
+        showQuestion(5);
+      });
+    });
+
+    // Функция для обновления данных в review-контейнере
+    function updateReviewValues(field, value) {
+      urlParams.set(field, value);
+      document.getElementById(`${field}-value`).textContent = value;
+    }
   </script>
 </body>
 </html>
