@@ -1,0 +1,14 @@
+{
+  "name": "telegram-bot-form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "deploy": "vercel deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
