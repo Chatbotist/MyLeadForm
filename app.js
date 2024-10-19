@@ -50,6 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const selectedValue = selectedButton.dataset.value;
       updateReviewValues(currentQuestion.id, selectedValue);
+      if (selectedValue === 'other') {
+        currentQuestionIndex++;
+        showQuestion(currentQuestionIndex);
+      } else {
+        currentQuestionIndex += 2;
+        showQuestion(currentQuestionIndex);
+      }
     } else if (currentQuestion.type === 'input' || currentQuestion.type === 'textarea') {
       const inputValue = document.getElementById(`${currentQuestion.id}-${currentQuestion.type}`).value;
       if (!inputValue.trim()) {
@@ -57,9 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       updateReviewValues(currentQuestion.id, inputValue);
+      currentQuestionIndex++;
+      showQuestion(currentQuestionIndex);
     }
-    currentQuestionIndex++;
-    showQuestion(currentQuestionIndex);
   });
 
   editButton.addEventListener('click', () => {
@@ -96,9 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const selectedValue = event.target.dataset.value;
       updateReviewValues('platform', selectedValue);
       if (selectedValue === 'other') {
-        showQuestion(1);
+        currentQuestionIndex++;
+        showQuestion(currentQuestionIndex);
       } else {
-        showQuestion(2);
+        currentQuestionIndex += 2;
+        showQuestion(currentQuestionIndex);
       }
     });
   });
@@ -113,7 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
       event.target.classList.add('selected');
       const selectedValue = event.target.dataset.value;
       updateReviewValues('budget', selectedValue);
-      showQuestion(5);
+      currentQuestionIndex++;
+      showQuestion(currentQuestionIndex);
     });
   });
 
