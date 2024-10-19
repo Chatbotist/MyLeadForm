@@ -4,70 +4,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Заявка на чат-бота</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
     }
     .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-    .question-container {
-      background-color: white;
-      border-radius: 10px;
-      padding: 20px;
+    h1 {
+      font-weight: bold;
       margin-bottom: 20px;
     }
-    .question-container h2 {
-      margin-top: 0;
+    .question-container {
+      margin-bottom: 20px;
+      text-align: left;
+      width: 80%;
+      max-width: 600px;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 15px;
     }
-    .answer-options {
+    .question-container label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .answer-buttons {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
     }
-    .answer-options button {
-      background-color: #4CAF50;
+    .answer-button {
+      background-color: transparent;
       color: white;
-      border: none;
+      border: 1px solid black;
       padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
+      border-radius: 15px;
       margin-bottom: 10px;
       cursor: pointer;
+    }
+    .answer-button.selected {
+      background-color: #4CAF50;
+      border-color: #4CAF50;
+    }
+    .question-container textarea,
+    .question-container input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
       border-radius: 5px;
-    }
-    .answer-options button.selected {
-      background-color: #3e8e41;
-    }
-    .answer-options button:hover {
-      background-color: #3e8e41;
+      border: 1px solid #ccc;
+      background-color: #f2f2f2;
+      color: black;
     }
     .button-container {
       display: flex;
       justify-content: space-between;
-      margin-top: 20px;
+      width: 80%;
+      max-width: 600px;
     }
     .button-container button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
       padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
       font-size: 16px;
-      cursor: pointer;
       border-radius: 5px;
+      border: none;
+      background-color: white;
+      color: black;
+      cursor: pointer;
+      border: 1px solid black;
     }
     .button-container button:disabled {
-      background-color: #cccccc;
+      background-color: #999;
       cursor: not-allowed;
     }
   </style>
@@ -76,42 +92,42 @@
   <div class="container">
     <h1>Заявка на чат-бота</h1>
     <div class="question-container" id="platform-question" style="display: block;">
-      <h2>Для какой платформы нужен чат-бот?</h2>
-      <div class="answer-options">
-        <button data-value="telegram">Telegram</button>
-        <button data-value="vkontakte">Вконтакте</button>
-        <button data-value="instagram">Instagram</button>
-        <button data-value="whatsapp">WhatsApp</button>
-        <button data-value="viber">Viber</button>
-        <button data-value="avito">Avito</button>
-        <button data-value="discord">Discord</button>
-        <button data-value="website">Сайт</button>
-        <button data-value="other">Другое</button>
+      <label>Для какой платформы нужен чат-бот?</label>
+      <div class="answer-buttons">
+        <button class="answer-button" data-value="telegram">Telegram</button>
+        <button class="answer-button" data-value="vkontakte">Вконтакте</button>
+        <button class="answer-button" data-value="instagram">Instagram</button>
+        <button class="answer-button" data-value="whatsapp">WhatsApp</button>
+        <button class="answer-button" data-value="viber">Viber</button>
+        <button class="answer-button" data-value="avito">Avito</button>
+        <button class="answer-button" data-value="discord">Discord</button>
+        <button class="answer-button" data-value="website">Сайт</button>
+        <button class="answer-button" data-value="other">Другое</button>
       </div>
     </div>
     <div class="question-container" id="other-platform-question" style="display: none;">
-      <h2>Укажите для какой платформы нужен чат-бот</h2>
+      <label>Укажите для какой платформы нужен чат-бот</label>
       <input type="text" id="other-platform-input">
     </div>
     <div class="question-container" id="sphere-question" style="display: none;">
-      <h2>Для какой сферы нужен чат-бот?</h2>
+      <label>Для какой сферы нужен чат-бот?</label>
       <textarea id="sphere-textarea"></textarea>
     </div>
     <div class="question-container" id="functionality-question" style="display: none;">
-      <h2>Какой функционал и особенности должны быть в боте?</h2>
+      <label>Какой функционал и особенности должны быть в боте?</label>
       <textarea id="functionality-textarea"></textarea>
     </div>
     <div class="question-container" id="budget-question" style="display: none;">
-      <h2>Какой бюджет вы планируете выделить на разработку?</h2>
-      <div class="answer-options">
-        <button data-value="15000-30000">15 000 - 30 000</button>
-        <button data-value="30000-60000">30 000 - 60 000</button>
-        <button data-value="60000-120000">60 000 - 120 000</button>
-        <button data-value="over120000">от 120 000</button>
+      <label>Какой бюджет вы планируете выделить на разработку?</label>
+      <div class="answer-buttons">
+        <button class="answer-button" data-value="15000-30000">15 000 - 30 000</button>
+        <button class="answer-button" data-value="30000-60000">30 000 - 60 000</button>
+        <button class="answer-button" data-value="60000-120000">60 000 - 120 000</button>
+        <button class="answer-button" data-value="over120000">от 120 000</button>
       </div>
     </div>
     <div class="question-container" id="phone-question" style="display: none;">
-      <h2>Номер телефона</h2>
+      <label>Номер телефона</label>
       <input type="tel" id="phone-input">
     </div>
     <div class="question-container" id="review-question" style="display: none;">
@@ -133,11 +149,17 @@
   </div>
 
   <script>
+    // Инициализация Telegram Web App
+    Telegram.WebApp.init();
+    Telegram.WebApp.setBackgroundColor('black');
+    Telegram.WebApp.expand();
+    Telegram.WebApp.enableVerticalSwipes();
+    Telegram.WebApp.enableClosingConfirmation();
+
     // Получение данных пользователя из Telegram
-    const urlParams = new URLSearchParams(window.location.search);
-    const telegramId = urlParams.get('telegram_id');
-    const telegramUsername = urlParams.get('username');
-    const telegramName = urlParams.get('name');
+    const telegramId = Telegram.WebApp.initDataUnsafe.user.id;
+    const telegramUsername = Telegram.WebApp.initDataUnsafe.user.username;
+    const telegramName = Telegram.WebApp.initDataUnsafe.user.first_name;
 
     // Логика переключения вопросов
     let currentQuestionIndex = 0;
@@ -161,39 +183,38 @@
         const questionContainer = document.getElementById(`${question.id}-question`);
         if (i === index) {
           questionContainer.style.display = 'block';
-          if (i === 0) {
-            prevButton.disabled = true;
-          } else {
-            prevButton.disabled = false;
-          }
-          if (i === questions.length - 1) {
-            nextButton.disabled = true;
-          } else {
-            nextButton.disabled = false;
-          }
+          prevButton.disabled = i === 0;
+          nextButton.disabled = false;
         } else {
           questionContainer.style.display = 'none';
         }
       });
     }
 
+    prevButton.addEventListener('click', () => {
+      currentQuestionIndex--;
+      showQuestion(currentQuestionIndex);
+    });
+
     nextButton.addEventListener('click', () => {
       const currentQuestion = questions[currentQuestionIndex];
       if (currentQuestion.type === 'buttons') {
-        const selectedButton = document.querySelector(`.answer-options button.selected`);
-        if (!selectedButton) return;
+        const selectedButton = document.querySelector(`.answer-button.selected`);
+        if (!selectedButton) {
+          Telegram.WebApp.showAlert('Выберите вариант ответа');
+          return;
+        }
         const selectedValue = selectedButton.dataset.value;
         updateReviewValues(currentQuestion.id, selectedValue);
       } else if (currentQuestion.type === 'input' || currentQuestion.type === 'textarea') {
         const inputValue = document.getElementById(`${currentQuestion.id}-${currentQuestion.type}`).value;
+        if (!inputValue.trim()) {
+          Telegram.WebApp.showAlert(`Заполните поле "${currentQuestion.id}"`);
+          return;
+        }
         updateReviewValues(currentQuestion.id, inputValue);
       }
       currentQuestionIndex++;
-      showQuestion(currentQuestionIndex);
-    });
-
-    prevButton.addEventListener('click', () => {
-      currentQuestionIndex--;
       showQuestion(currentQuestionIndex);
     });
 
@@ -218,12 +239,13 @@
 
       // Здесь должен быть код для отправки данных по API Telegram
       console.log('Отправлено:', formData);
+      Telegram.WebApp.close();
     });
 
     // Обработка выбора платформы
-    document.querySelectorAll('#platform-question .answer-options button').forEach((button) => {
+    document.querySelectorAll('.answer-button').forEach((button) => {
       button.addEventListener('click', (event) => {
-        const selectedButton = document.querySelector('#platform-question .answer-options button.selected');
+        const selectedButton = document.querySelector('.answer-button.selected');
         if (selectedButton) {
           selectedButton.classList.remove('selected');
         }
@@ -239,9 +261,9 @@
     });
 
     // Обработка выбора бюджета
-    document.querySelectorAll('#budget-question .answer-options button').forEach((button) => {
+    document.querySelectorAll('#budget-question .answer-button').forEach((button) => {
       button.addEventListener('click', (event) => {
-        const selectedButton = document.querySelector('#budget-question .answer-options button.selected');
+        const selectedButton = document.querySelector('#budget-question .answer-button.selected');
         if (selectedButton) {
           selectedButton.classList.remove('selected');
         }
