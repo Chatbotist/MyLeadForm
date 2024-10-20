@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Форма отправки данных</title>
   <style>
     /* Общие стили */
@@ -12,8 +12,9 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f5f5f5;
+      background-color: #000;
       margin: 0;
+      user-select: none;
     }
 
     .form-container {
@@ -43,8 +44,7 @@
     }
 
     .form-group input,
-    .form-group textarea,
-    .form-group .radio-group {
+    .form-group textarea {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
@@ -60,18 +60,33 @@
     .form-group .radio-group {
       display: flex;
       flex-direction: column;
-      padding: 10px;
+      padding: 0;
     }
 
     .form-group .radio-group label {
       display: flex;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       font-weight: normal;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     .form-group .radio-group input[type="radio"] {
-      margin-right: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .form-group .radio-group label:hover {
+      background-color: #f5f5f5;
+    }
+
+    .form-group .radio-group input[type="radio"]:checked + label {
+      background-color: #333;
+      color: #fff;
     }
 
     /* Стили для кнопки */
@@ -95,7 +110,7 @@
     /* Стили для валидации */
     .form-group.error input,
     .form-group.error textarea,
-    .form-group.error .radio-group {
+    .form-group.error .radio-group label {
       border-color: #dc3545;
     }
 
@@ -109,7 +124,7 @@
     <h2>Заявка на чат-бота</h2>
     <form id="userForm">
       <div class="form-group">
-        <label for="platform">1. Для какой платформы нужен чат-бот?*</label>
+        <label>1. Для какой платформы нужен чат-бот?*</label>
         <div class="radio-group">
           <label><input type="radio" name="platform" value="Telegram" required> Telegram</label>
           <label><input type="radio" name="platform" value="Вконтакте" required> Вконтакте</label>
@@ -145,7 +160,7 @@
 
       <div class="form-group">
         <label for="phone">5. Введите ваш номер телефона*</label>
-        <input type="tel" id="phone" name="phone" required placeholder="+7 (XXX) XXX-XX-XX" pattern="^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$" oninput="validatePhoneInput(event)">
+        <input type="tel" id="phone" name="phone" required pattern="^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$" oninput="formatPhoneInput(event)">
       </div>
 
       <button type="button" onclick="sendMessage()">Отправить</button>
@@ -153,24 +168,20 @@
   </div>
 
   <script>
-    function validatePhoneInput(event) {
+    function formatPhoneInput(event) {
       const input = event.target;
       input.value = formatPhoneNumber(input.value);
     }
 
     function formatPhoneNumber(value) {
-      const phoneNumber = value.replace(/[^\d]/g, '');
+      const phoneNumber = value.replace(/\D/g, '');
       const phoneNumberLength = phoneNumber.length;
 
-      if (phoneNumberLength < 4) {
-        return phoneNumber;
+      if (phoneNumberLength < 11) {
+        return `+7 (${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 8)}-${phoneNumber.slice(8)}`;
       }
 
-      if (phoneNumberLength < 7) {
-        return `+7 (${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-      }
-
-      return `+7 (${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 8)}-${phoneNumber.slice(8, 10)}`;
+      return '';
     }
 
     function sendMessage() {
