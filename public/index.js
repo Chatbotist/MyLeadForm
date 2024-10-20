@@ -21,7 +21,7 @@ document.body.style.backgroundColor = Telegram.WebApp.colorScheme === 'dark' ? '
 const { user_id, username, first_name } = Telegram.WebApp.initDataUnsafe;
 
 // Обработка события отправки формы
-const form = document.getElementById('survey-form');
+const form = document.querySelector('form');
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   sendSurveyData();
