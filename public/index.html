@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Заявка на чат-бота</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>Чат-бот Опрос</title>
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
   <div class="container">
     <h2>Заявка на чат-бота</h2>
-    <div class="question-container">
+    <form id="survey-form">
       <div class="question">
         <h3>Для какой платформы нужен чат-бот?</h3>
         <div class="options">
@@ -44,10 +43,10 @@
         <h3>Введите ваш номер телефона</h3>
         <input type="tel" class="input-field" id="phone-number" required>
       </div>
-    </div>
-    <div class="buttons">
-      <button class="submit-btn">Отправить</button>
-    </div>
+      <div class="buttons">
+        <button type="submit" class="submit-btn">Отправить</button>
+      </div>
+    </form>
   </div>
   <script src="index.js"></script>
 </body>
