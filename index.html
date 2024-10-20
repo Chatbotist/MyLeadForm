@@ -161,14 +161,32 @@ Telegram.WebApp.enableClosingConfirmation();
                 .then(response => response.json())
                 .then(data => {
                     if (data.ok) {
-                        alert('Заявка успешно отправлена!');
+                        await window.Telegram.WebApp.showPopup({
+                            title: 'Недостаточно вращений',
+                            message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
+                            buttons: [
+                              { id: 1, title: 'Понятно', type: 'close' }
+                            ]
+                        });
                         window.location.href = 'https://t.me/ChatbotistBot';
                     } else {
-                        alert('Ошибка при отправке заявки.');
+          await window.Telegram.WebApp.showPopup({
+            title: 'Недостаточно вращений',
+            message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
+            buttons: [
+              { id: 1, title: 'Понятно', type: 'close' }
+            ]
+          });
                     }
                 })
                 .catch(error => {
-                    alert('Ошибка при отправке заявки.');
+          await window.Telegram.WebApp.showPopup({
+            title: 'Недостаточно вращений',
+            message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
+            buttons: [
+              { id: 1, title: 'Понятно', type: 'close' }
+            ]
+          });
                 });
         }
     </script>
