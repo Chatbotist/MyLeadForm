@@ -11,8 +11,8 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
-            color: #000;
+            background-color: #000;
+            color: #fff;
             margin: 0;
         }
         .form-container {
@@ -20,14 +20,14 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 300px;
+            position: relative;
         }
         .form-container h2 {
             margin-bottom: 20px;
             color: #000;
-            font-family: Arial, sans-serif;
         }
-        .form-container input, .form-container textarea, .form-container select {
+        .form-container input, .form-container textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -36,37 +36,30 @@
             color: #000;
             background-color: #fff;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
-        .form-container button {
+        .form-container input::placeholder, .form-container textarea::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
+        .option-button {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #000;
             border-radius: 5px;
             cursor: pointer;
-            font-family: Arial, sans-serif;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
         }
-        .form-container button:hover {
-            background-color: #218838;
+        .option-button:hover {
+            background-color: rgba(255, 255, 255, 0.7);
         }
         .error-message {
             color: red;
-            margin-top: -10px;
-            margin-bottom: 10px;
-            display: none;
-        }
-        .question {
-            margin-bottom: 10px;
-        }
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .button-group button {
-            flex: 1 1 calc(50% - 10px);
+            font-size: 12px;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
         }
     </style>
 </head>
@@ -74,51 +67,38 @@
     <div class="form-container">
         <h2>Введите ваши данные</h2>
         <form id="userForm">
-            <div class="question">
-                <label>Для какой платформы нужен чат-бот?*</label>
-                <div class="button-group">
-                    <button type="button" onclick="selectPlatform('Telegram')">Telegram</button>
-                    <button type="button" onclick="selectPlatform('Вконтакте')">Вконтакте</button>
-                    <button type="button" onclick="selectPlatform('Instagram')">Instagram</button>
-                    <button type="button" onclick="selectPlatform('WhatsApp')">WhatsApp</button>
-                    <button type="button" onclick="selectPlatform('Viber')">Viber</button>
-                    <button type="button" onclick="selectPlatform('Avito')">Avito</button>
-                    <button type="button" onclick="selectPlatform('Discord')">Discord</button>
-                    <button type="button" onclick="selectPlatform('Сайт')">Сайт</button>
-                    <button type="button" onclick="selectPlatform('Другое')">Другое</button>
+            <div>
+                <label>1) Для какой платформы нужен чат-бот?*</label>
+                <br>
+                <div id="platform-options">
+                    <button type="button" class="option-button" onclick="selectPlatform('Telegram')">Telegram</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('Вконтакте')">Вконтакте</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('Instagram')">Instagram</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('WhatsApp')">WhatsApp</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('Viber')">Viber</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('Avito')">Avito</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('Discord')">Discord</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('Сайт')">Сайт</button>
+                    <button type="button" class="option-button" onclick="selectPlatform('Другое')">Другое</button>
                 </div>
-                <span class="error-message" id="platformError">Пожалуйста, выберите платформу.</span>
+                <div class="error-message" id="platform-error"></div>
             </div>
+            <input type="text" id="sphere" name="sphere" required placeholder="2) Для какой сферы нужен чат-бот?*">
+            <textarea id="functionality" name="functionality" placeholder="3) Какой функционал и особенности должны быть в боте?*" rows="4" required></textarea>
 
-            <div class="question">
-                <label>Для какой сферы нужен чат-бот?*</label>
-                <input type="text" id="sphere" placeholder="Введите сферу" required>
-                <span class="error-message" id="sphereError">Пожалуйста, введите сферу.</span>
-            </div>
-
-            <div class="question">
-                <label>Какой функционал и особенности должны быть в боте?*</label>
-                <textarea id="functionality" placeholder="Введите функционал" required rows="4"></textarea>
-                <span class="error-message" id="functionalityError">Пожалуйста, введите функционал.</span>
+            <div>
+                <label>4) Какой бюджет вы планируете выделить на разработку?*</label>
+                <br>
+                <button type="button" class="option-button" onclick="selectBudget('15 000 - 30 000')">15 000 - 30 000</button>
+                <button type="button" class="option-button" onclick="selectBudget('30 000 - 60 000')">30 000 - 60 000</button>
+                <button type="button" class="option-button" onclick="selectBudget('60 000 - 120 000')">60 000 - 120 000</button>
+                <button type="button" class="option-button" onclick="selectBudget('от 120 000')">от 120 000</button>
+                <div class="error-message" id="budget-error"></div>
             </div>
             
-            <div class="question">
-                <label>Какой бюджет вы планируете выделить на разработку?*</label>
-                <div class="button-group">
-                    <button type="button" onclick="selectBudget('15 000 - 30 000')">15 000 - 30 000</button>
-                    <button type="button" onclick="selectBudget('30 000 - 60 000')">30 000 - 60 000</button>
-                    <button type="button" onclick="selectBudget('60 000 - 120 000')">60 000 - 120 000</button>
-                    <button type="button" onclick="selectBudget('от 120 000')">от 120 000</button>
-                </div>
-                <span class="error-message" id="budgetError">Пожалуйста, выберите бюджет.</span>
-            </div>
-
-            <div class="question">
-                <label>Введите ваш номер телефона*</label>
-                <input type="tel" id="phone" required placeholder="Номер телефона" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
-                <span class="error-message" id="phoneError">Пожалуйста, введите корректный номер.</span>
-            </div>
-
+            <input type="tel" id="phone" name="phone" required placeholder="5) Введите ваш номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
+            <div class="error-message" id="phone-error"></div>
+            
             <button type="button" onclick="sendMessage()">Отправить</button>
         </form>
     </div>
@@ -126,75 +106,52 @@
     <script>
         let selectedPlatform = '';
         let selectedBudget = '';
-
+        
         function selectPlatform(platform) {
             selectedPlatform = platform;
-            const errorMessage = document.getElementById('platformError');
-            errorMessage.style.display = 'none'; // Скрыть сообщение об ошибке
+            document.getElementById('platform-error').innerText = '';
         }
-
+        
         function selectBudget(budget) {
             selectedBudget = budget;
-            const errorMessage = document.getElementById('budgetError');
-            errorMessage.style.display = 'none'; // Скрыть сообщение об ошибке
+            document.getElementById('budget-error').innerText = '';
         }
-
+        
         function validatePhoneInput(event) {
             const input = event.target;
             input.value = input.value.replace(/[^+\d]/g, '');
         }
 
         function sendMessage() {
-            const name = document.getElementById('name') ? document.getElementById('name').value.trim() : '';
+            const name = document.getElementById('name').value.trim();
             const sphere = document.getElementById('sphere').value.trim();
             const functionality = document.getElementById('functionality').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const phonePattern = /^\+79\d{9}$/;
 
-            let valid = true;
+            let hasError = false;
 
-            // Проверяем платформу
             if (!selectedPlatform) {
-                document.getElementById('platformError').style.display = 'block';
-                valid = false; 
+                document.getElementById('platform-error').innerText = 'Пожалуйста, выберите платформу.';
+                hasError = true;
             }
-
-            // Проверяем сферу
-            if (!sphere) {
-                document.getElementById('sphereError').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('sphereError').style.display = 'none';
-            }
-
-            // Проверяем функционал
-            if (!functionality) {
-                document.getElementById('functionalityError').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('functionalityError').style.display = 'none';
-            }
-
-            // Проверяем бюджет
             if (!selectedBudget) {
-                document.getElementById('budgetError').style.display = 'block';
-                valid = false; 
+                document.getElementById('budget-error').innerText = 'Пожалуйста, выберите бюджет.';
+                hasError = true;
             }
-
-            // Проверяем телефон
             if (!phonePattern.test(phone)) {
-                document.getElementById('phoneError').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('phoneError').style.display = 'none';
+                document.getElementById('phone-error').innerText = 'Введите корректный номер телефона.';
+                hasError = true;
             }
 
-            if (!valid) return; // Если есть ошибки, не отправляем сообщение
+            if (hasError) {
+                return;
+            }
 
             const botToken = '6622286162:AAFs87hQFpIXgFOEHu4-DUOGzWbdbx_cmJ4';
             const chatId = '-1002021943203';
             const messageThreadId = '2';
-            const text = `Платформа: ${selectedPlatform}\nСфера: ${sphere}\nФункционал: ${functionality}\nБюджет: ${selectedBudget}\nНомер телефона: ${phone}`;
+            const text = `Имя: ${name}\nСфера: ${sphere}\nФункционал: ${functionality}\nПлатформа: ${selectedPlatform}\nБюджет: ${selectedBudget}\nНомер телефона: ${phone}`;
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
 
             fetch(url)
