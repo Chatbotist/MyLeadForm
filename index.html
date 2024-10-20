@@ -29,7 +29,7 @@
     }
     .form-container input,
     .form-container textarea,
-    .form-container .radio-group {
+    .form-container .radio-group label {
       width: 100%;
       margin-bottom: 10px;
       border: 1px solid #ccc;
@@ -51,11 +51,18 @@
       resize: vertical;
     }
     .form-container .radio-group {
-      padding: 10px;
+      padding: 0;
     }
     .form-container .radio-group label {
-      display: block;
-      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .form-container .radio-group input[type="radio"] {
+      margin-right: 5px;
+      cursor: pointer;
     }
     .form-container button {
       width: 100%;
