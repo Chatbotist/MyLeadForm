@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +15,6 @@
             color: #000;
             margin: 0;
         }
-
         .form-container {
             background-color: #fff;
             padding: 20px;
@@ -24,15 +22,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
         }
-
         .form-container h2 {
             margin-bottom: 20px;
             color: #000;
         }
-
-        .form-container input,
-        .form-container select,
-        .form-container textarea {
+        .form-container input, .form-container select, .form-container textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -42,27 +36,22 @@
             background-color: #fff;
             box-sizing: border-box;
         }
-
-        .form-container input::placeholder,
-        .form-container textarea::placeholder {
+        .form-container input::placeholder, .form-container textarea::placeholder {
             color: rgba(0, 0, 0, 0.5);
         }
-
         .form-container button {
             width: 100%;
             padding: 10px;
-            background-color: #000; /* Черный цвет кнопки */
-            color: #fff; /* Белый текст на кнопке */
-            border: none; /* Убираем рамку */
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #000;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
-
         .form-container button:hover {
-            background-color: #444; /* Темнее при наведении */
+            background-color: #e6e6e6;
         }
-
         .error-message {
             color: red;
             font-size: 12px;
@@ -71,7 +60,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="form-container">
         <h2>Введите ваши данные</h2>
@@ -89,13 +77,13 @@
                 <option value="Другое">Другое</option>
             </select>
             <div id="platformError" class="error-message"></div>
-
+            
             <input type="text" id="sphere" name="sphere" required placeholder="Для какой сферы нужен чат-бот?*">
             <div id="sphereError" class="error-message"></div>
-
+            
             <textarea id="functionality" name="functionality" required placeholder="Какой функционал и особенности должны быть в боте?*" rows="4"></textarea>
             <div id="functionalityError" class="error-message"></div>
-
+            
             <select id="budget" name="budget" required>
                 <option value="" disabled selected>Какой бюджет вы планируете выделить на разработку?*</option>
                 <option value="15000-30000">15 000 - 30 000</option>
@@ -104,10 +92,10 @@
                 <option value="120000">от 120 000</option>
             </select>
             <div id="budgetError" class="error-message"></div>
-
+            
             <input type="tel" id="phone" name="phone" required placeholder="Номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
             <div id="phoneError" class="error-message"></div>
-
+            
             <button type="button" onclick="sendMessage()">Отправить</button>
         </form>
     </div>
@@ -159,14 +147,10 @@
                 return;
             }
 
-            // Получение данных о пользователе через Telegram Web Apps
-            const user = Telegram.WebApps.getUser();
-            const text = `Платформа: ${platform}\nСфера: ${sphere}\nФункционал: ${functionality}\nБюджет: ${budget}\nНомер телефона: ${phone}\nTelegram ID: ${user.id}\nUsername: ${user.username}\nИмя: ${user.first_name}`;
-
-            // Отправка данных через Telegram API
             const botToken = '6622286162:AAFs87hQFpIXgFOEHu4-DUOGzWbdbx_cmJ4';
             const chatId = '-1002021943203';
             const messageThreadId = '2';
+            const text = `Платформа: ${platform}\nСфера: ${sphere}\nФункционал: ${functionality}\nБюджет: ${budget}\nНомер телефона: ${phone}`;
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
 
             fetch(url)
@@ -185,5 +169,4 @@
         }
     </script>
 </body>
-
 </html>
