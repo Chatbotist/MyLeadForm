@@ -161,14 +161,14 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.ok) {
-                        showAlert('Заявка успешно отправлена!');
+                        Telegram.WebApp.showAlert('Заявка успешно отправлена!');
                         window.location.href = 'https://t.me/ChatbotistBot';
                     } else {
-                        showAlert('Ошибка при отправке заявки.');
+                        Telegram.WebApp.showAlert('Ошибка при отправке заявки.');
                     }
                 })
                 .catch(error => {
-                    showAlert('Ошибка при отправке заявки.');
+                    Telegram.WebApp.showAlert('Ошибка при отправке заявки.');
                 });
         }
     </script>
