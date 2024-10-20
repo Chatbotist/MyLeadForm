@@ -62,7 +62,7 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Введите ваши данные</h2>
+        <h2>Заявка на чат-бота</h2>
         <form id="userForm">
             <select id="platform" name="platform" required>
                 <option value="" disabled selected>Для какой платформы нужен чат-бот?*</option>
@@ -70,9 +70,6 @@
                 <option value="Вконтакте">Вконтакте</option>
                 <option value="Instagram">Instagram</option>
                 <option value="WhatsApp">WhatsApp</option>
-                <option value="Viber">Viber</option>
-                <option value="Avito">Avito</option>
-                <option value="Discord">Discord</option>
                 <option value="Сайт">Сайт</option>
                 <option value="Другое">Другое</option>
             </select>
@@ -157,14 +154,14 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.ok) {
-                        // Здесь можно добавить сообщение об успешной отправке
+                        alert('Заявка успешно отправлена!');
                         window.location.href = 'https://t.me/ChatbotistBot';
                     } else {
-                        // Здесь можно добавить сообщение об ошибке
+                        alert('Ошибка при отправке заявки.');
                     }
                 })
                 .catch(error => {
-                    // Обработка ошибок сети
+                    alert('Ошибка при отправке заявки.');
                 });
         }
     </script>
