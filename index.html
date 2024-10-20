@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма отправки данных</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,12 +97,6 @@
         </form>
     </div>
     <script>
-Telegram.WebApp.ready();
-Telegram.WebApp.setBackgroundColor('#000000'); // Установка черного фона
-Telegram.WebApp.setHeaderColor('#000000'); // Установка цвета заголовка
-Telegram.WebApp.expand();
-Telegram.WebApp.enableClosingConfirmation();
-        
         function validatePhoneInput(event) {
             const input = event.target;
             input.value = input.value.replace(/[^+\d]/g, '');
@@ -158,37 +151,19 @@ Telegram.WebApp.enableClosingConfirmation();
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
 
             fetch(url)
-    .then(response => response.json())
-    .then(async data => {
-        if (data.ok) {
-            await window.Telegram.WebApp.showPopup({
-                title: 'Недостаточно вращений',
-                message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
-                buttons: [
-                    { id: 1, title: 'Понятно', type: 'close' }
-                ]
-            });
-            window.location.href = 'https://t.me/ChatbotistBot';
-        } else {
-            await window.Telegram.WebApp.showPopup({
-                title: 'Недостаточно вращений',
-                message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
-                buttons: [
-                    { id: 1, title: 'Понятно', type: 'close' }
-                ]
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        showAlert('Заявка успешно отправлена!', () => {
+                            window.location.href = 'https://t.me/ChatbotistBot';
+                    } else {
+                        showAlert('Ошибка при отправке заявки.');
+                    }
+                })
+                .catch(error => {
+                    showAlert('Ошибка при отправке заявки.');
+                });
         }
-    })
-    .catch(async error => {
-        await window.Telegram.WebApp.showPopup({
-            title: 'Ошибка',
-            message: 'Произошла ошибка: ' + error.message,
-            buttons: [
-                { id: 1, title: 'Понятно', type: 'close' }
-            ]
-        });
-    });
-
     </script>
 </body>
 </html>
