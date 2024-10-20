@@ -6,50 +6,50 @@
     <title>Форма отправки данных</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #000;
+            color: #000;
             margin: 0;
         }
         .form-container {
             background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
         }
         .form-container h2 {
             margin-bottom: 20px;
-            color: #333;
-            text-align: center;
+            color: #000;
+            font-family: Arial, sans-serif;
         }
-        .form-container label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            display: block;
-        }
-        .form-container input,
-        .form-container select,
-        .form-container textarea {
+        .form-container input, .form-container select, .form-container textarea {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            color: #000;
+            background-color: #fff;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        .form-container input::placeholder, .form-container textarea::placeholder {
+            color: rgba(0, 0, 0, 0.5);
         }
         .form-container button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background-color: #28a745;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-family: Arial, sans-serif;
         }
         .form-container button:hover {
             background-color: #218838;
@@ -58,11 +58,10 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Заполните форму</h2>
+        <h2>Введите ваши данные</h2>
         <form id="userForm">
-            <label for="platform">Для какой платформы нужен чат-бот?*</label>
             <select id="platform" name="platform" required>
-                <option value="">Выберите платформу</option>
+                <option value="" disabled selected>Для какой платформы нужен чат-бот?*</option>
                 <option value="Telegram">Telegram</option>
                 <option value="Вконтакте">Вконтакте</option>
                 <option value="Instagram">Instagram</option>
@@ -73,52 +72,43 @@
                 <option value="Сайт">Сайт</option>
                 <option value="Другое">Другое</option>
             </select>
-
-            <label for="sphere">Для какой сферы нужен чат-бот?*</label>
-            <input type="text" id="sphere" name="sphere" required placeholder="Укажите сферу">
-
-            <label for="functionality">Какой функционал и особенности должны быть в боте?*</label>
-            <textarea id="functionality" name="functionality" required placeholder="Опишите функционал" rows="4"></textarea>
-
-            <label for="budget">Какой бюджет вы планируете выделить на разработку?*</label>
+            <input type="text" id="sphere" name="sphere" required placeholder="Для какой сферы нужен чат-бот?*">
+            <textarea id="functionality" name="functionality" required placeholder="Какой функционал и особенности должны быть в боте?*" rows="4"></textarea>
             <select id="budget" name="budget" required>
-                <option value="">Выберите бюджет</option>
+                <option value="" disabled selected>Какой бюджет вы планируете выделить на разработку?*</option>
                 <option value="15000-30000">15 000 - 30 000</option>
                 <option value="30000-60000">30 000 - 60 000</option>
                 <option value="60000-120000">60 000 - 120 000</option>
-                <option value="above120000">От 120 000</option>
+                <option value="120000">от 120 000</option>
             </select>
-
-            <label for="phone">Введите ваш номер телефона*</label>
-            <input type="tel" id="phone" name="phone" required placeholder="+79XXXXXXXXX" pattern="+79d{9}" oninput="validatePhoneInput(event)">
-
+            <input type="tel" id="phone" name="phone" required placeholder="Номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
             <button type="button" onclick="sendMessage()">Отправить</button>
         </form>
     </div>
-
     <script>
         function validatePhoneInput(event) {
             const input = event.target;
-            input.value = input.value.replace(/[^+d]/g, '');
+            input.value = input.value.replace(/[^+\d]/g, '');
         }
-
+        
         function sendMessage() {
-            const platform = document.getElementById('platform').value.trim();            const sphere = document.getElementById('sphere').value.trim();
+            const platform = document.getElementById('platform').value;
+            const sphere = document.getElementById('sphere').value.trim();
             const functionality = document.getElementById('functionality').value.trim();
-            const budget = document.getElementById('budget').value.trim();
+            const budget = document.getElementById('budget').value;
             const phone = document.getElementById('phone').value.trim();
-            const phonePattern = /^+79d{9}$/;
+            const phonePattern = /^\+79\d{9}$/;
 
             if (!platform || !sphere || !functionality || !budget || !phone || !phonePattern.test(phone)) {
-                alert('Пожалуйста, заполните все поля корректно.');
+                alert('Пожалуйста, введите корректные данные.');
                 return;
             }
 
             const botToken = '6622286162:AAFs87hQFpIXgFOEHu4-DUOGzWbdbx_cmJ4';
             const chatId = '-1002021943203';
-            const text = Платформа: ${platform}nСфера: ${sphere}nФункционал: ${functionality}nБюджет: ${budget}nНомер телефона: ${phone};
-            
-            const url = https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)};
+            const messageThreadId = '2';
+            const text = `Платформа: ${platform}\nСфера: ${sphere}\nФункционал: ${functionality}\nБюджет: ${budget}\nНомер телефона: ${phone}`;
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
 
             fetch(url)
                 .then(response => response.json())
