@@ -154,14 +154,14 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.ok) {
-                        alert('Заявка успешно отправлена!');
-                        window.location.href = 'https://t.me/ChatbotistBot';
+                        showAlert('Заявка успешно отправлена!', () => {
+                            window.location.href = 'https://t.me/ChatbotistBot';
                     } else {
-                        alert('Ошибка при отправке заявки.');
+                        showAlert('Ошибка при отправке заявки.');
                     }
                 })
                 .catch(error => {
-                    alert('Ошибка при отправке заявки.');
+                    showAlert('Ошибка при отправке заявки.');
                 });
         }
     </script>
