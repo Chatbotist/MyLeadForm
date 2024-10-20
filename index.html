@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
             color: #000;
             margin: 0;
         }
+
         .form-container {
             background-color: #fff;
             padding: 20px;
@@ -22,11 +24,15 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
         }
+
         .form-container h2 {
             margin-bottom: 20px;
             color: #000;
         }
-        .form-container input, .form-container select, .form-container textarea {
+
+        .form-container input,
+        .form-container select,
+        .form-container textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -36,9 +42,12 @@
             background-color: #fff;
             box-sizing: border-box;
         }
-        .form-container input::placeholder, .form-container textarea::placeholder {
+
+        .form-container input::placeholder,
+        .form-container textarea::placeholder {
             color: rgba(0, 0, 0, 0.5);
         }
+
         .form-container button {
             width: 100%;
             padding: 10px;
@@ -49,9 +58,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .form-container button:hover {
             background-color: #444; /* Темнее при наведении */
         }
+
         .error-message {
             color: red;
             font-size: 12px;
@@ -60,6 +71,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="form-container">
         <h2>Введите ваши данные</h2>
@@ -77,13 +89,13 @@
                 <option value="Другое">Другое</option>
             </select>
             <div id="platformError" class="error-message"></div>
-            
+
             <input type="text" id="sphere" name="sphere" required placeholder="Для какой сферы нужен чат-бот?*">
             <div id="sphereError" class="error-message"></div>
-            
+
             <textarea id="functionality" name="functionality" required placeholder="Какой функционал и особенности должны быть в боте?*" rows="4"></textarea>
             <div id="functionalityError" class="error-message"></div>
-            
+
             <select id="budget" name="budget" required>
                 <option value="" disabled selected>Какой бюджет вы планируете выделить на разработку?*</option>
                 <option value="15000-30000">15 000 - 30 000</option>
@@ -92,10 +104,10 @@
                 <option value="120000">от 120 000</option>
             </select>
             <div id="budgetError" class="error-message"></div>
-            
+
             <input type="tel" id="phone" name="phone" required placeholder="Номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
             <div id="phoneError" class="error-message"></div>
-            
+
             <button type="button" onclick="sendMessage()">Отправить</button>
         </form>
     </div>
@@ -161,11 +173,10 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.ok) {
-                        // Можно отобразить сообщение об успешной отправке
-                        // Например, перенаправление или изменение содержимого страницы
+                        // Здесь можно добавить сообщение об успешной отправке
                         window.location.href = 'https://t.me/ChatbotistBot';
                     } else {
-                        // Можно отобразить сообщение об ошибке
+                        // Здесь можно добавить сообщение об ошибке
                     }
                 })
                 .catch(error => {
@@ -174,4 +185,5 @@
         }
     </script>
 </body>
+
 </html>
