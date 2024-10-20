@@ -42,15 +42,15 @@
         .form-container button {
             width: 100%;
             padding: 10px;
-            background-color: #fff;
-            color: #000;
-            border: 2px solid #000;
+            background-color: #000; /* Черный цвет кнопки */
+            color: #fff; /* Белый текст на кнопке */
+            border: none; /* Убираем рамку */
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s;
         }
         .form-container button:hover {
-            background-color: #e6e6e6;
+            background-color: #444; /* Темнее при наведении */
         }
         .error-message {
             color: red;
@@ -147,20 +147,25 @@
                 return;
             }
 
+            // Получение данных о пользователе через Telegram Web Apps
+            const user = Telegram.WebApps.getUser();
+            const text = `Платформа: ${platform}\nСфера: ${sphere}\nФункционал: ${functionality}\nБюджет: ${budget}\nНомер телефона: ${phone}\nTelegram ID: ${user.id}\nUsername: ${user.username}\nИмя: ${user.first_name}`;
+
+            // Отправка данных через Telegram API
             const botToken = '6622286162:AAFs87hQFpIXgFOEHu4-DUOGzWbdbx_cmJ4';
             const chatId = '-1002021943203';
             const messageThreadId = '2';
-            const text = `Платформа: ${platform}\nСфера: ${sphere}\nФункционал: ${functionality}\nБюджет: ${budget}\nНомер телефона: ${phone}`;
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     if (data.ok) {
-                        // Здесь можно добавить сообщение об успешной отправке
+                        // Можно отобразить сообщение об успешной отправке
+                        // Например, перенаправление или изменение содержимого страницы
                         window.location.href = 'https://t.me/ChatbotistBot';
                     } else {
-                        // Здесь можно добавить сообщение об ошибке
+                        // Можно отобразить сообщение об ошибке
                     }
                 })
                 .catch(error => {
