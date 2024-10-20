@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма отправки данных</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,6 +99,11 @@
         </form>
     </div>
     <script>
+        Telegram.WebApp.setBackgroundColor('#000000');
+        Telegram.WebApp.setHeaderColor('#DDBCBC');
+        Telegram.WebApp.expand();
+        Telegram.WebApp.enableClosingConfirmation();
+        
         function validatePhoneInput(event) {
             const input = event.target;
             input.value = input.value.replace(/[^+\d]/g, '');
