@@ -98,22 +98,11 @@
         </form>
     </div>
     <script>
-window.addEventListener('DOMContentLoaded', async () => {
-  try {
-    // Инициализация Telegram Web App
-    await Telegram.WebApp.ready();
-
-    // Установка цвета заголовка и фона
-    Telegram.WebApp.setBackgroundColor('#313335');
-    Telegram.WebApp.setHeaderColor('#DDBCBC');
-
-    Telegram.WebApp.expand();
-    Telegram.WebApp.enableClosingConfirmation();
-
-    // Получаем данные пользователя из Telegram Web App SDK
-    const { user: { id: telegramId, username, first_name, last_name } } = Telegram.WebApp.initDataUnsafe;
-    const name = `${first_name} ${last_name}`;
-});
+Telegram.WebApp.ready();
+Telegram.WebApp.setBackgroundColor('#313335');
+Telegram.WebApp.setHeaderColor('#DDBCBC');
+Telegram.WebApp.expand();
+Telegram.WebApp.enableClosingConfirmation();
         
         function validatePhoneInput(event) {
             const input = event.target;
