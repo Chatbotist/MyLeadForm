@@ -1,27 +1,5 @@
-// Инициализация Telegram Web App
-Telegram.WebApp.onEvent('beforeClose', function() {
-  if (!validateForm()) {
-    Telegram.WebApp.showPopup({
-      title: 'Ошибка',
-      message: 'Пожалуйста, заполните все обязательные поля.'
-    });
-    return false;
-  }
-  return true;
-});
-
-Telegram.WebApp.onEvent('mainButtonClicked', function() {
-  sendSurveyData();
-});
-
-// Установка цвета фона в зависимости от темы пользователя
-document.body.style.backgroundColor = Telegram.WebApp.colorScheme === 'dark' ? '#000000' : '#ffffff';
-
-// Получение данных пользователя
-const { user_id, username, first_name } = Telegram.WebApp.initDataUnsafe;
-
 // Обработка события отправки формы
-const form = document.querySelector('form');
+const form = document.getElementById('survey-form');
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   sendSurveyData();
@@ -41,33 +19,24 @@ async function sendSurveyData() {
   }
 
   try {
-    // Отправка данных по API Telegram
+    // Отправка данных на сервер
     const response = await fetch('/api/sendSurveyData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ telegramId: user_id, username, name: first_name, platform, botPurpose, botFeatures, budget, phoneNumber })
+      body: JSON.stringify({ platform, botPurpose, botFeatures, budget, phoneNumber })
     });
 
     if (response.ok) {
-      Telegram.WebApp.showPopup({
-        title: 'Успех',
-        message: 'Данные успешно отправлены!'
-      });
-      Telegram.WebApp.close();
+      alert('Данные успешно отправлены!');
+      form.reset();
     } else {
       const error = await response.json();
-      Telegram.WebApp.showPopup({
-        title: 'Ошибка',
-        message: `Ошибка: ${error.error}`
-      });
+      alert(`Ошибка: ${error.error}`);
     }
   } catch (error) {
-    Telegram.WebApp.showPopup({
-      title: 'Ошибка',
-      message: 'Произошла ошибка. Пожалуйста, попробуйте еще раз.'
-    });
+    alert('Произошла ошибка. Пожалуйста, попробуйте еще раз.');
     console.error('Ошибка при отправке данных:', error);
   }
 }
@@ -87,9 +56,3 @@ function validateForm() {
 
   return true;
 }
-
-// Открытие приложения на весь экран
-Telegram.WebApp.expand();
-
-// Включение подтверждения закрытия
-Telegram.WebApp.enableClosingConfirmation();
