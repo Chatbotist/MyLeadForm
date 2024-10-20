@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
 }
+
 .container {
   display: flex;
   flex-direction: column;
@@ -11,40 +12,52 @@ body {
   height: 100vh;
   background-color: #ffffff;
 }
+
 .question-container {
   background-color: #f8f8f8;
   padding: 20px;
   border-radius: 10px;
   width: 80%;
+  max-width: 600px;
 }
+
 .question {
   margin-bottom: 20px;
 }
+
 .question h3 {
   margin-top: 0;
 }
+
 .options {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
+
 .options label {
   display: block;
   margin-bottom: 10px;
   cursor: pointer;
 }
+
 .options input[type="radio"] {
   margin-right: 5px;
 }
+
 .input-field {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
   box-sizing: border-box;
 }
+
 .buttons {
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
+
 .submit-btn {
   background-color: white;
   color: black;
