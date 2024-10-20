@@ -158,37 +158,37 @@ Telegram.WebApp.enableClosingConfirmation();
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
 
             fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        await window.Telegram.WebApp.showPopup({
-                            title: 'Недостаточно вращений',
-                            message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
-                            buttons: [
-                              { id: 1, title: 'Понятно', type: 'close' }
-                            ]
-                        });
-                        window.location.href = 'https://t.me/ChatbotistBot';
-                    } else {
-          await window.Telegram.WebApp.showPopup({
-            title: 'Недостаточно вращений',
-            message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
-            buttons: [
-              { id: 1, title: 'Понятно', type: 'close' }
-            ]
-          });
-                    }
-                })
-                .catch(error => {
-          await window.Telegram.WebApp.showPopup({
-            title: 'Недостаточно вращений',
-            message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
-            buttons: [
-              { id: 1, title: 'Понятно', type: 'close' }
-            ]
-          });
-                });
+    .then(response => response.json())
+    .then(async data => {
+        if (data.ok) {
+            await window.Telegram.WebApp.showPopup({
+                title: 'Недостаточно вращений',
+                message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
+                buttons: [
+                    { id: 1, title: 'Понятно', type: 'close' }
+                ]
+            });
+            window.location.href = 'https://t.me/ChatbotistBot';
+        } else {
+            await window.Telegram.WebApp.showPopup({
+                title: 'Недостаточно вращений',
+                message: 'Приглашайте друзей и получайте +1 вращение за каждого!',
+                buttons: [
+                    { id: 1, title: 'Понятно', type: 'close' }
+                ]
+            });
         }
+    })
+    .catch(async error => {
+        await window.Telegram.WebApp.showPopup({
+            title: 'Ошибка',
+            message: 'Произошла ошибка: ' + error.message,
+            buttons: [
+                { id: 1, title: 'Понятно', type: 'close' }
+            ]
+        });
+    });
+
     </script>
 </body>
 </html>
