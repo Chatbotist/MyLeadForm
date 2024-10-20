@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Форма отправки данных</title>
+  <style>
+    /* Стили из предыдущего примера */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #000;
+      color: #000;
+      margin: 0;
+    }
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    .form-container h2 {
+      margin-bottom: 20px;
+      color: #000;
+      font-family: Arial, sans-serif;
+    }
+    .form-container input,
+    .form-container textarea,
+    .form-container .radio-group {
+      width: 100%;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      color: #000;
+      background-color: #fff;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    .form-container input,
+    .form-container textarea {
+      padding: 10px;
+    }
+    .form-container input::placeholder,
+    .form-container textarea::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+    .form-container textarea {
+      resize: vertical;
+    }
+    .form-container .radio-group {
+      padding: 10px;
+    }
+    .form-container .radio-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+    .form-container button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Заявка на чат-бота</h2>
+    <form id="userForm">
+      <div class="radio-group">
+        <h3>1. Для какой платформы нужен чат-бот?*</h3>
+        <label><input type="radio" name="platform" value="Telegram" required> Telegram</label>
+        <label><input type="radio" name="platform" value="Вконтакте" required> Вконтакте</label>
+        <label><input type="radio" name="platform" value="Instagram" required> Instagram</label>
+        <label><input type="radio" name="platform" value="WhatsApp" required> WhatsApp</label>
+        <label><input type="radio" name="platform" value="Viber" required> Viber</label>
+        <label><input type="radio" name="platform" value="Avito" required> Avito</label>
+        <label><input type="radio" name="platform" value="Discord" required> Discord</label>
+        <label><input type="radio" name="platform" value="Сайт" required> Сайт</label>
+        <label><input type="radio" name="platform" value="Другое" required> Другое</label>
+      </div>
+      <input type="text" id="botPurpose" name="botPurpose" required placeholder="2. Для какой сферы нужен чат-бот?*">
+      <textarea id="botFeatures" name="botFeatures" placeholder="3. Какой функционал и особенности должны быть в боте?*" rows="4" required></textarea>
+      <div class="radio-group">
+        <h3>4. Какой бюджет вы планируете выделить на разработку?*</h3>
+        <label><input type="radio" name="budget" value="15000-30000" required> 15 000 - 30 000</label>
+        <label><input type="radio" name="budget" value="30000-60000" required> 30 000 - 60 000</label>
+        <label><input type="radio" name="budget" value="60000-120000" required> 60 000 - 120 000</label>
+        <label><input type="radio" name="budget" value="over120000" required> от 120 000</label>
+      </div>
+      <input type="tel" id="phone" name="phone" required placeholder="5. Введите ваш номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
+      <button type="button" onclick="sendMessage()">Отправить</button>
+    </form>
+  </div>
+
+  <script>
+    function validatePhoneInput(event) {
+      const input = event.target;
+      input.value = input.value.replace(/[^+\d]/g, '');
+    }
+
+    function sendMessage() {
+      const form = document.getElementById('userForm');
+      const formData = new FormData(form);
+
+      // Проверка заполнения обязательных полей
+      if (!formData.get('platform') || !formData.get('botPurpose') || !formData.get('botFeatures') || !formData.get('budget') || !formData.get('phone')) {
+        alert('Пожалуйста, заполните все обязательные поля.');
+        return;
+      }
+
+      // Проверка формата номера телефона
+      const phonePattern = /^\+79\d{9}$/;
+      const phone = formData.get('phone');
+      if (!phonePattern.test(phone)) {
+        alert('Пожалуйста, введите корректный номер телефона.');
+        return;
+      }
+
+      const botToken = '6622286162:AAFs87hQFpIXgFOEHu4-DUOGzWbdbx_cmJ4';
+      const chatId = '-1002021943203';
+      const messageThreadId = '2';
+      const text = `Платформа: ${formData.get('platform')}\nСфера: ${formData.get('botPurpose')}\nФункционал: ${formData.get('botFeatures')}\nБюджет: ${formData.get('budget')}\nНомер телефона: ${phone}`;
+
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
+
+      // Отправка данных в Telegram
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            alert('Данные успешно отправлены!');
+            form.reset();
+            window.location.href = 'https://t.me/ChatbotistBot';
+          } else {
+            alert('Ошибка при отправке данных. Пожалуйста, попробуйте еще раз.');
+          }
+        })
+        .catch(error => {
+          alert('Произошла ошибка. Пожалуйста, попробуйте еще раз.');
+          console.error('Ошибка при отправке данных:', error);
+        });
+    }
+  </script>
+</body>
+</html>
