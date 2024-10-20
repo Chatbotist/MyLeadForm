@@ -5,71 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Форма отправки данных</title>
   <style>
-    /* Стили из предыдущего примера */
+    /* Общие стили */
     body {
       font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #000;
-      color: #000;
+      background-color: #f5f5f5;
       margin: 0;
     }
+
     .form-container {
       background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      width: 400px;
     }
+
     .form-container h2 {
+      text-align: center;
       margin-bottom: 20px;
-      color: #000;
-      font-family: Arial, sans-serif;
+      color: #333;
     }
-    .form-container input,
-    .form-container textarea,
-    .form-container .radio-group {
+
+    /* Стили для полей формы */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group .radio-group {
       width: 100%;
-      margin-bottom: 10px;
+      padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      color: #000;
-      background-color: #fff;
+      font-size: 14px;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
     }
-    .form-container input,
-    .form-container textarea {
-      padding: 10px;
-    }
-    .form-container input::placeholder,
-    .form-container textarea::placeholder {
-      color: rgba(0, 0, 0, 0.5);
-    }
-    .form-container textarea {
+
+    .form-group textarea {
       resize: vertical;
     }
-    .form-container .radio-group {
+
+    .form-group .radio-group {
+      display: flex;
+      flex-direction: column;
       padding: 10px;
     }
-    .form-container .radio-group label {
-      display: block;
+
+    .form-group .radio-group label {
+      display: flex;
+      align-items: center;
       margin-bottom: 5px;
+      font-weight: normal;
     }
+
+    .form-group .radio-group input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    /* Стили для кнопки */
     .form-container button {
+      display: block;
       width: 100%;
       padding: 10px;
-      background-color: #28a745;
+      background-color: #007bff;
       color: #fff;
       border: none;
       border-radius: 5px;
+      font-size: 16px;
       cursor: pointer;
-      font-family: Arial, sans-serif;
+      transition: background-color 0.3s;
     }
+
     .form-container button:hover {
-      background-color: #218838;
+      background-color: #0056b3;
+    }
+
+    /* Стили для валидации */
+    .form-group.error input,
+    .form-group.error textarea,
+    .form-group.error .radio-group {
+      border-color: #dc3545;
+    }
+
+    .form-group.error label {
+      color: #dc3545;
     }
   </style>
 </head>
@@ -77,28 +108,46 @@
   <div class="form-container">
     <h2>Заявка на чат-бота</h2>
     <form id="userForm">
-      <div class="radio-group">
-        <h3>1. Для какой платформы нужен чат-бот?*</h3>
-        <label><input type="radio" name="platform" value="Telegram" required> Telegram</label>
-        <label><input type="radio" name="platform" value="Вконтакте" required> Вконтакте</label>
-        <label><input type="radio" name="platform" value="Instagram" required> Instagram</label>
-        <label><input type="radio" name="platform" value="WhatsApp" required> WhatsApp</label>
-        <label><input type="radio" name="platform" value="Viber" required> Viber</label>
-        <label><input type="radio" name="platform" value="Avito" required> Avito</label>
-        <label><input type="radio" name="platform" value="Discord" required> Discord</label>
-        <label><input type="radio" name="platform" value="Сайт" required> Сайт</label>
-        <label><input type="radio" name="platform" value="Другое" required> Другое</label>
+      <div class="form-group">
+        <label for="platform">1. Для какой платформы нужен чат-бот?*</label>
+        <div class="radio-group">
+          <label><input type="radio" name="platform" value="Telegram" required> Telegram</label>
+          <label><input type="radio" name="platform" value="Вконтакте" required> Вконтакте</label>
+          <label><input type="radio" name="platform" value="Instagram" required> Instagram</label>
+          <label><input type="radio" name="platform" value="WhatsApp" required> WhatsApp</label>
+          <label><input type="radio" name="platform" value="Viber" required> Viber</label>
+          <label><input type="radio" name="platform" value="Avito" required> Avito</label>
+          <label><input type="radio" name="platform" value="Discord" required> Discord</label>
+          <label><input type="radio" name="platform" value="Сайт" required> Сайт</label>
+          <label><input type="radio" name="platform" value="Другое" required> Другое</label>
+        </div>
       </div>
-      <input type="text" id="botPurpose" name="botPurpose" required placeholder="2. Для какой сферы нужен чат-бот?*">
-      <textarea id="botFeatures" name="botFeatures" placeholder="3. Какой функционал и особенности должны быть в боте?*" rows="4" required></textarea>
-      <div class="radio-group">
-        <h3>4. Какой бюджет вы планируете выделить на разработку?*</h3>
-        <label><input type="radio" name="budget" value="15000-30000" required> 15 000 - 30 000</label>
-        <label><input type="radio" name="budget" value="30000-60000" required> 30 000 - 60 000</label>
-        <label><input type="radio" name="budget" value="60000-120000" required> 60 000 - 120 000</label>
-        <label><input type="radio" name="budget" value="over120000" required> от 120 000</label>
+
+      <div class="form-group">
+        <label for="botPurpose">2. Для какой сферы нужен чат-бот?*</label>
+        <input type="text" id="botPurpose" name="botPurpose" required>
       </div>
-      <input type="tel" id="phone" name="phone" required placeholder="5. Введите ваш номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
+
+      <div class="form-group">
+        <label for="botFeatures">3. Какой функционал и особенности должны быть в боте?*</label>
+        <textarea id="botFeatures" name="botFeatures" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>4. Какой бюджет вы планируете выделить на разработку?*</label>
+        <div class="radio-group">
+          <label><input type="radio" name="budget" value="15000-30000" required> 15 000 - 30 000</label>
+          <label><input type="radio" name="budget" value="30000-60000" required> 30 000 - 60 000</label>
+          <label><input type="radio" name="budget" value="60000-120000" required> 60 000 - 120 000</label>
+          <label><input type="radio" name="budget" value="over120000" required> от 120 000</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">5. Введите ваш номер телефона*</label>
+        <input type="tel" id="phone" name="phone" required placeholder="+7 (XXX) XXX-XX-XX" pattern="^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$" oninput="validatePhoneInput(event)">
+      </div>
+
       <button type="button" onclick="sendMessage()">Отправить</button>
     </form>
   </div>
@@ -106,7 +155,22 @@
   <script>
     function validatePhoneInput(event) {
       const input = event.target;
-      input.value = input.value.replace(/[^+\d]/g, '');
+      input.value = formatPhoneNumber(input.value);
+    }
+
+    function formatPhoneNumber(value) {
+      const phoneNumber = value.replace(/[^\d]/g, '');
+      const phoneNumberLength = phoneNumber.length;
+
+      if (phoneNumberLength < 4) {
+        return phoneNumber;
+      }
+
+      if (phoneNumberLength < 7) {
+        return `+7 (${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+      }
+
+      return `+7 (${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 8)}-${phoneNumber.slice(8, 10)}`;
     }
 
     function sendMessage() {
@@ -115,15 +179,15 @@
 
       // Проверка заполнения обязательных полей
       if (!formData.get('platform') || !formData.get('botPurpose') || !formData.get('botFeatures') || !formData.get('budget') || !formData.get('phone')) {
-        alert('Пожалуйста, заполните все обязательные поля.');
+        showValidationErrors();
         return;
       }
 
       // Проверка формата номера телефона
-      const phonePattern = /^\+79\d{9}$/;
+      const phonePattern = /^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/;
       const phone = formData.get('phone');
       if (!phonePattern.test(phone)) {
-        alert('Пожалуйста, введите корректный номер телефона.');
+        showValidationErrors();
         return;
       }
 
@@ -143,13 +207,37 @@
             form.reset();
             window.location.href = 'https://t.me/ChatbotistBot';
           } else {
-            alert('Ошибка при отправке данных. Пожалуйста, попробуйте еще раз.');
+            showValidationErrors();
           }
         })
         .catch(error => {
           alert('Произошла ошибка. Пожалуйста, попробуйте еще раз.');
           console.error('Ошибка при отправке данных:', error);
         });
+    }
+
+    function showValidationErrors() {
+      const form = document.getElementById('userForm');
+      const formGroups = form.querySelectorAll('.form-group');
+
+      formGroups.forEach(group => {
+        group.classList.remove('error');
+      });
+
+      const missingFields = [];
+      formGroups.forEach(group => {
+        const input = group.querySelector('input, textarea');
+        if (input && !input.value.trim()) {
+          group.classList.add('error');
+          missingFields.push(group.querySelector('label').textContent.slice(0, -1));
+        }
+      });
+
+      if (missingFields.length > 0) {
+        alert(`Пожалуйста, заполните следующие обязательные поля:\n- ${missingFields.join('\n- ')}`);
+      } else {
+        alert('Пожалуйста, введите корректный номер телефона.');
+      }
     }
   </script>
 </body>
