@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             background-color: #000;
-            color: #fff;
+            color: #000;
             margin: 0;
         }
         .form-container {
@@ -21,13 +21,12 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
-            position: relative;
         }
         .form-container h2 {
             margin-bottom: 20px;
             color: #000;
         }
-        .form-container input, .form-container textarea {
+        .form-container input, .form-container select, .form-container textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -40,7 +39,7 @@
         .form-container input::placeholder, .form-container textarea::placeholder {
             color: rgba(0, 0, 0, 0.5);
         }
-        .option-button {
+        .form-container button {
             width: 100%;
             padding: 10px;
             background-color: #fff;
@@ -48,18 +47,16 @@
             border: 2px solid #000;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 10px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .option-button:hover {
-            background-color: rgba(255, 255, 255, 0.7);
+        .form-container button:hover {
+            background-color: #e6e6e6;
         }
         .error-message {
             color: red;
             font-size: 12px;
-            position: absolute;
-            bottom: -20px;
-            left: 0;
+            margin-top: -10px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -67,80 +64,82 @@
     <div class="form-container">
         <h2>Введите ваши данные</h2>
         <form id="userForm">
-            <div>
-                <label>1) Для какой платформы нужен чат-бот?*</label>
-                <br>
-                <div id="platform-options">
-                    <button type="button" class="option-button" onclick="selectPlatform('Telegram')">Telegram</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('Вконтакте')">Вконтакте</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('Instagram')">Instagram</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('WhatsApp')">WhatsApp</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('Viber')">Viber</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('Avito')">Avito</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('Discord')">Discord</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('Сайт')">Сайт</button>
-                    <button type="button" class="option-button" onclick="selectPlatform('Другое')">Другое</button>
-                </div>
-                <div class="error-message" id="platform-error"></div>
-            </div>
-            <input type="text" id="sphere" name="sphere" required placeholder="2) Для какой сферы нужен чат-бот?*">
-            <textarea id="functionality" name="functionality" placeholder="3) Какой функционал и особенности должны быть в боте?*" rows="4" required></textarea>
-
-            <div>
-                <label>4) Какой бюджет вы планируете выделить на разработку?*</label>
-                <br>
-                <button type="button" class="option-button" onclick="selectBudget('15 000 - 30 000')">15 000 - 30 000</button>
-                <button type="button" class="option-button" onclick="selectBudget('30 000 - 60 000')">30 000 - 60 000</button>
-                <button type="button" class="option-button" onclick="selectBudget('60 000 - 120 000')">60 000 - 120 000</button>
-                <button type="button" class="option-button" onclick="selectBudget('от 120 000')">от 120 000</button>
-                <div class="error-message" id="budget-error"></div>
-            </div>
+            <select id="platform" name="platform" required>
+                <option value="" disabled selected>Для какой платформы нужен чат-бот?*</option>
+                <option value="Telegram">Telegram</option>
+                <option value="Вконтакте">Вконтакте</option>
+                <option value="Instagram">Instagram</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Viber">Viber</option>
+                <option value="Avito">Avito</option>
+                <option value="Discord">Discord</option>
+                <option value="Сайт">Сайт</option>
+                <option value="Другое">Другое</option>
+            </select>
+            <div id="platformError" class="error-message"></div>
             
-            <input type="tel" id="phone" name="phone" required placeholder="5) Введите ваш номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
-            <div class="error-message" id="phone-error"></div>
+            <input type="text" id="sphere" name="sphere" required placeholder="Для какой сферы нужен чат-бот?*">
+            <div id="sphereError" class="error-message"></div>
+            
+            <textarea id="functionality" name="functionality" required placeholder="Какой функционал и особенности должны быть в боте?*" rows="4"></textarea>
+            <div id="functionalityError" class="error-message"></div>
+            
+            <select id="budget" name="budget" required>
+                <option value="" disabled selected>Какой бюджет вы планируете выделить на разработку?*</option>
+                <option value="15000-30000">15 000 - 30 000</option>
+                <option value="30000-60000">30 000 - 60 000</option>
+                <option value="60000-120000">60 000 - 120 000</option>
+                <option value="120000">от 120 000</option>
+            </select>
+            <div id="budgetError" class="error-message"></div>
+            
+            <input type="tel" id="phone" name="phone" required placeholder="Номер телефона*" pattern="^\+79\d{9}$" oninput="validatePhoneInput(event)">
+            <div id="phoneError" class="error-message"></div>
             
             <button type="button" onclick="sendMessage()">Отправить</button>
         </form>
     </div>
-
     <script>
-        let selectedPlatform = '';
-        let selectedBudget = '';
-        
-        function selectPlatform(platform) {
-            selectedPlatform = platform;
-            document.getElementById('platform-error').innerText = '';
-        }
-        
-        function selectBudget(budget) {
-            selectedBudget = budget;
-            document.getElementById('budget-error').innerText = '';
-        }
-        
         function validatePhoneInput(event) {
             const input = event.target;
             input.value = input.value.replace(/[^+\d]/g, '');
         }
 
         function sendMessage() {
-            const name = document.getElementById('name').value.trim();
+            const platform = document.getElementById('platform').value;
             const sphere = document.getElementById('sphere').value.trim();
             const functionality = document.getElementById('functionality').value.trim();
+            const budget = document.getElementById('budget').value;
             const phone = document.getElementById('phone').value.trim();
             const phonePattern = /^\+79\d{9}$/;
 
+            // Сброс ошибок
+            document.getElementById('platformError').textContent = '';
+            document.getElementById('sphereError').textContent = '';
+            document.getElementById('functionalityError').textContent = '';
+            document.getElementById('budgetError').textContent = '';
+            document.getElementById('phoneError').textContent = '';
+
             let hasError = false;
 
-            if (!selectedPlatform) {
-                document.getElementById('platform-error').innerText = 'Пожалуйста, выберите платформу.';
+            if (!platform) {
+                document.getElementById('platformError').textContent = 'Пожалуйста, выберите платформу.';
                 hasError = true;
             }
-            if (!selectedBudget) {
-                document.getElementById('budget-error').innerText = 'Пожалуйста, выберите бюджет.';
+            if (!sphere) {
+                document.getElementById('sphereError').textContent = 'Пожалуйста, введите сферу.';
                 hasError = true;
             }
-            if (!phonePattern.test(phone)) {
-                document.getElementById('phone-error').innerText = 'Введите корректный номер телефона.';
+            if (!functionality) {
+                document.getElementById('functionalityError').textContent = 'Пожалуйста, опишите функционал.';
+                hasError = true;
+            }
+            if (!budget) {
+                document.getElementById('budgetError').textContent = 'Пожалуйста, выберите бюджет.';
+                hasError = true;
+            }
+            if (!phone || !phonePattern.test(phone)) {
+                document.getElementById('phoneError').textContent = 'Пожалуйста, введите корректный номер телефона (+79XXXXXXXXX).';
                 hasError = true;
             }
 
@@ -151,22 +150,21 @@
             const botToken = '6622286162:AAFs87hQFpIXgFOEHu4-DUOGzWbdbx_cmJ4';
             const chatId = '-1002021943203';
             const messageThreadId = '2';
-            const text = `Имя: ${name}\nСфера: ${sphere}\nФункционал: ${functionality}\nПлатформа: ${selectedPlatform}\nБюджет: ${selectedBudget}\nНомер телефона: ${phone}`;
+            const text = `Платформа: ${platform}\nСфера: ${sphere}\nФункционал: ${functionality}\nБюджет: ${budget}\nНомер телефона: ${phone}`;
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&message_thread_id=${messageThreadId}&text=${encodeURIComponent(text)}`;
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     if (data.ok) {
-                        alert('Сообщение успешно отправлено!');
+                        // Здесь можно добавить сообщение об успешной отправке
                         window.location.href = 'https://t.me/ChatbotistBot';
                     } else {
-                        alert('Ошибка при отправке сообщения.');
+                        // Здесь можно добавить сообщение об ошибке
                     }
                 })
                 .catch(error => {
-                    console.error('Ошибка:', error);
-                    alert('Ошибка при отправке сообщения.');
+                    // Обработка ошибок сети
                 });
         }
     </script>
